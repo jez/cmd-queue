@@ -15,7 +15,6 @@
     "jade": "~1.9.2",
     "morgan": "~1.5.1",
     "sequelize": "^2.1.0",
-    "sequelize-cli": "^1.7.0",
     "serve-favicon": "~2.2.0",
     "sqlite3": "^3.0.5"
   }
