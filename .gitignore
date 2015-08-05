@@ -32,3 +32,5 @@ node_modules
 
 .*.sw[nop]
 tags
+
+data
