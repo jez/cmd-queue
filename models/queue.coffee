@@ -1,18 +1,18 @@
 module.exports = (sequelize, DataTypes) ->
   Queue = sequelize.define 'Queue',
     key:
-      allowNull: false,
-      primaryKey: true,
+      allowNull: false
+      primaryKey: true
       type: DataTypes.STRING
 
     owner:
-      allowNull: false,
-      type: DataTypes.STRING,
+      allowNull: false
+      type: DataTypes.STRING
       validate:
-        isEmail: true,
+        isEmail: true
 
     name:
-      allowNull: false,
+      allowNull: false
       type: DataTypes.STRING
   ,
     classMethods:

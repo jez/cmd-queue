@@ -1,10 +1,10 @@
 module.exports = (sequelize, DataTypes) ->
   Spot = sequelize.define 'Spot',
     email:
-      allowNull: false,
-      type: DataTypes.STRING,
+      allowNull: false
+      type: DataTypes.STRING
       validate:
-        isEmail: true,
+        isEmail: true
   ,
     classMethods:
       associate: (models) ->
