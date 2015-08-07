@@ -5,19 +5,15 @@ module.exports = (sequelize, DataTypes) ->
       primaryKey: true
       type: DataTypes.STRING
 
-    owner:
-      allowNull: false
-      type: DataTypes.STRING
-      validate:
-        isEmail: true
-
-    name:
+    displayName:
       allowNull: false
       type: DataTypes.STRING
   ,
+    underscored: true
     classMethods:
       associate: (models) ->
-        # associations can be defined here
-        Queue.hasMany models.Spot
+        Queue.hasOne models.User,
+          as: 'owner'
+        Queue.hasMany models.Spot,
 
   Queue

@@ -13,9 +13,9 @@ exports.show = (req, res, next) ->
 
 exports.create = (req, res, next) ->
   queue =
-    key:   req.body.key
-    owner: req.body.owner
-    name:  req.body.name
+    key:         req.body.key
+    displayName: req.body.name
+    owner:       req.user.id
 
   models.Queue.create queue
     .then ->

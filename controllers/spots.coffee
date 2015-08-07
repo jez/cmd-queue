@@ -6,14 +6,14 @@ exports.index = (req, res, next) ->
       res.json spots
 
 exports.show = (req, res, next) ->
-  id = req.params.id
-  models.Spot.find id
+  key = req.params.key
+  models.Spot.find key
     .then (spot) ->
       res.json spot
 
 exports.create = (req, res, next) ->
   spot =
-    email: req.body.email
+    holder: req.user.id
 
   models.Spot.create spot
     .then ->
