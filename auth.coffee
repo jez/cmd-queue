@@ -12,8 +12,8 @@ models         = require './models'
 passport.serializeUser (user, done) ->
   done null, user.id
 
-passport.deserializeUser (obj, done) ->
-  models.User.find obj.id
+passport.deserializeUser (id, done) ->
+  models.User.findById id
     .then (user) ->
       done null, user
     .error (err) ->
@@ -37,8 +37,9 @@ passport.use new GoogleStrategy
     familyName:  profile.name.familyName
     email:       emails[0]
 
-  models.User.create user
-    .then (user) ->
+  models.User.findOrCreate
+      where: user
+    .then ([{dataValues: user}]) ->
       done null, user
     .error (err) ->
       done err, null
