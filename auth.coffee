@@ -37,8 +37,7 @@ passport.use new GoogleStrategy
     familyName:  profile.name.familyName
     email:       emails[0]
 
-  models.User.findOrCreate
-      where: user
+  models.User.findOrCreate where: user
     .then ([{dataValues: user}]) ->
       done null, user
     .error (err) ->
