@@ -34,3 +34,6 @@ node_modules
 tags
 
 data
+
+.env
+.env.prod

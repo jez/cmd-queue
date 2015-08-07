@@ -53,6 +53,15 @@ onListening = ->
 port = normalizePort(process.env.PORT || '3000')
 app.set 'port', port
 
+# Validate that relevant config has been set
+
+fail = (message, status) ->
+  console.error "[error] #{message}. Read the README for more information."
+  process.exit(status || 1)
+
+fail 'Google client id not set'     unless process.env.GOOGLE_CLIENT_ID
+fail 'Google client secret not set' unless process.env.GOOGLE_CLIENT_SECRET
+
 # Create HTTP server.
 
 server = http.createServer app
