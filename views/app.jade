@@ -1,0 +1,14 @@
+extends layout
+
+block head
+  link(rel="stylesheet", href="/css/app.css")
+
+block content
+  noscript
+    h1.noscript Whoa there!
+    p.noscript CMQueue makes heavy use of JavaScript.
+  #cmq-target
+  #cmq-modal-target
+
+block scripts
+  script(src='/js/bundle.js')

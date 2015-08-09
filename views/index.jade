@@ -5,4 +5,4 @@ block content
   p Welcome to #{title}
   p
     a(href="/auth/login") Login with your CMU account
-  pre #{user}
+  pre #{JSON.stringify(user, null, 2)}

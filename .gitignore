@@ -37,3 +37,4 @@ data
 
 .env
 .env.prod
+/public/js/*
