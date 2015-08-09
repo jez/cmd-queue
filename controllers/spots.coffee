@@ -13,12 +13,12 @@ exports.show = (req, res, next) ->
 
 exports.create = (req, res, next) ->
   spot =
-    holder: req.user.id
+    HolderId: req.user.id
 
   models.Spot.create spot
-    .then ->
-      res.location "/spots/#{spot.id}/"
-      res.status(201).send null
+    .then (spot) ->
+      res.location "/spots/#{spot.key}/"
+      res.status(201).json spot
     .error (err) ->
       # TODO better error message
       res.status(500).send null
@@ -27,8 +27,8 @@ exports.destroy = (req, res, next) ->
   id = req.params.id
 
   models.Spot.destroy { where: { id: id }}
-    .then (affected_rows) ->
-      res.status(200).send null
+    .then (affectedRows) ->
+      res.status(204).send null
     .error (err) ->
       # TODO better error message
       res.status(500).send null
