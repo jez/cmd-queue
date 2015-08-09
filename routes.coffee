@@ -1,42 +1,31 @@
 express = require 'express'
 
-# ----- index routes ----------------------------------------------------------
-indexRouter = express.Router()
-index = require './controllers/index'
-
-indexRouter.get '/', index.index
-
-# ---- auth routes ------------------------------------------------------------
-authRouter = express.Router()
-auth = require './controllers/auth'
-
-authRouter.get '/login'           , auth.login
-authRouter.get '/google/callback' , auth.callback, auth.after
-authRouter.get '/logout'          , auth.logout
-
-# ---- queues routes ----------------------------------------------------------
-queuesRouter = express.Router()
+auth   = require './controllers/auth'
 queues = require './controllers/queues'
+spots  = require './controllers/spots'
+app    = require './controllers/app'
 
-queuesRouter.get    '/'      , queues.index
-queuesRouter.get    '/:key/' , queues.show
-queuesRouter.post   '/'      , queues.create
-queuesRouter.delete '/:key/' , queues.destroy
+router = express.Router()
 
-# ---- spots routes -----------------------------------------------------------
-spotsRouter = express.Router()
-spots = require './controllers/spots'
+router.get    '/auth/login'           , auth.login
+router.get    '/auth/google/callback' , auth.callback, auth.after
+router.get    '/auth/logout'          , auth.logout
 
-spotsRouter.get    '/'      , spots.index
-spotsRouter.get    '/:key/' , spots.show
-spotsRouter.post   '/'      , spots.create
-spotsRouter.delete '/:key/' , spots.destroy
+router.get    '/api/queues'           , queues.index
+router.get    '/api/queues/:key'      , queues.show
+router.post   '/api/queues'           , queues.create
+router.put    '/api/queues/:key'      , queues.modify
+router.delete '/api/queues/:key'      , queues.destroy
+router.post   '/api/queues/:key/join' , queues.join
 
-# ----- app routes ------------------------------------------------------------
+router.get    '/api/spots'            , spots.index
+router.get    '/api/spots/:key'       , spots.show
+router.post   '/api/spots'            , spots.create
+router.delete '/api/spots/:key'       , spots.destroy
+
+router.get    '/'                     , app.app
+router.get    '/:key'                 , app.app
 
 module.exports = (app) ->
   # Register routers
-  app.use '/'       , indexRouter
-  app.use '/auth'   , authRouter
-  app.use '/queues' , queuesRouter
-  app.use '/spots'  , spotsRouter
+  app.use '/', router

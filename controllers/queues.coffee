@@ -45,3 +45,33 @@ exports.destroy = (req, res, next) ->
     .error (err) ->
       # TODO better error message
       res.status(500).send null
+
+exports.modify = (req, res, next) ->
+  key    = req.params.key
+  owners = req.body.owners
+
+  models.Queue.findById key
+    .then (queue) ->
+      queue.addOwners owners
+    .then (queue) ->
+      res.status(204).json queue
+    .error (err) ->
+      # TODO better error message
+      res.status(500).send null
+
+# non-RESTful endpoints
+
+exports.join = (req, res, next) ->
+  spot =
+    QueueKey: req.params.key
+    HolderId: req.user.id
+
+  models.Spot.create spot
+    .then (spot) ->
+      res.location "/spots/#{spot.key}/"
+      res.status(201).json spot
+
+    .error (err) ->
+      # TODO better error message
+      res.status(500).send null
+
