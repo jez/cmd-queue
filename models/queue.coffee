@@ -9,11 +9,12 @@ module.exports = (sequelize, DataTypes) ->
       allowNull: false
       type: DataTypes.STRING
   ,
-    underscored: true
     classMethods:
       associate: (models) ->
-        Queue.hasOne models.User,
-          as: 'owner'
-        Queue.hasMany models.Spot,
+        Queue.belongsToMany models.User,
+          as: 'Owners'
+          through: 'QueueOwners'
+
+        Queue.hasMany models.Spot
 
   Queue

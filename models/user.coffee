@@ -26,12 +26,15 @@ module.exports = (sequelize, DataTypes) ->
       validate:
         isEmail: true
   ,
-    underscored: true
     classMethods:
       associate: (models) ->
-        # queues this person owns
-        User.hasMany models.Queue
-        # spots this person is in
-        User.hasMany models.Spots
+        User.belongsToMany models.Queue,
+          as: 'Queues'
+          through: 'QueueOwners'
+          foreignKey: 'OwnerId'
+
+        User.hasMany models.Spot,
+          as: 'Holders'
+          foreignKey: 'HolderId'
 
   User

@@ -5,12 +5,12 @@ module.exports = (sequelize, DataTypes) ->
       primaryKey: true
       autoIncrement: true
   ,
-    underscored: true
     classMethods:
       associate: (models) ->
         # associations can be defined here
-        Spot.hasOne models.User,
-          as: 'holder'
+        Spot.belongsTo models.User,
+          as: 'Holder'
+
         Spot.belongsTo models.Queue
 
   Spot
