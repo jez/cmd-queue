@@ -17,7 +17,7 @@ fs
     db[model.name] = model
 
 Object.keys(db).forEach (modelName) ->
-  if 'associate' in db[modelName]
+  if 'associate' of db[modelName]
     db[modelName].associate db
 
 db.sequelize = sequelize
