@@ -38,7 +38,7 @@ passport.use new GoogleStrategy
     email:       emails[0]
 
   models.User.findOrCreate where: user
-    .then ([{dataValues: user}]) ->
+    .spread (user, created) ->
       done null, user
     .error (err) ->
       done err, null
