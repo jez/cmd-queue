@@ -13,10 +13,10 @@ router.get    '/auth/logout'          , auth.logout
 
 router.get    '/api/queues'           , queues.index
 router.get    '/api/queues/:key'      , queues.show
-router.post   '/api/queues'           , queues.create
+router.post   '/api/queues'           , auth.ensureAuthenticated, queues.create
 router.put    '/api/queues/:key'      , queues.modify
 router.delete '/api/queues/:key'      , queues.destroy
-router.post   '/api/queues/:key/join' , queues.join
+router.post   '/api/queues/:key/join' , auth.ensureAuthenticated, queues.join
 
 router.get    '/api/spots'            , spots.index
 router.get    '/api/spots/:key'       , spots.show
