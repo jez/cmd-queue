@@ -1,14 +1,18 @@
 extends layout
 
 block head
-  link(rel="stylesheet", href="/css/app.css")
+  link(rel="stylesheet", href="/css/main.css")
 
 block content
   noscript
     h1.noscript Whoa there!
     p.noscript CMQueue makes heavy use of JavaScript.
+  header
+    .cmq-header-wrapper
+      .cmq-brand CMQueue
+      .cmq-nav
   #cmq-target
-  #cmq-modal-target
+  #modal-target
 
 block scripts
   script(src='/js/bundle.js')

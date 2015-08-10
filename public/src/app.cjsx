@@ -9,7 +9,6 @@ Queue     = require './queue.cjsx'
 CMQueue = React.createClass
   render: ->
     <div className="cmq-wrapper">
-      <header />
       <RouteHandler />
     </div>
 
