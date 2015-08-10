@@ -1,4 +1,5 @@
 models = require '../models'
+util   = require '../public/src/util'
 
 includeParams = [
     model: models.Spot
@@ -13,7 +14,9 @@ exports.index = (req, res, next) ->
 
   # this is kind of an unfortunate query, but I'm not good enought at SQL nor
   # sequelize to be able to join all the queues and their lengths
-  models.Queue.findAll include: includeParams
+  models.Queue.findAll
+      include: includeParams
+      order: 'Queue.displayName ASC'
     .then (queues) ->
       res.json queues
 
@@ -29,6 +32,9 @@ exports.create = (req, res, next) ->
     key:         req.body.key
     displayName: req.body.displayName
   user = req.user
+
+  unless util.validate queue.key
+    res.status(500).send 'Invalid key for queue'
 
   models.Queue.create queue
     .then (queue) ->
