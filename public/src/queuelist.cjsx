@@ -1,51 +1,39 @@
-$     = require 'jquery'
-React = require 'react'
+$           = require 'jquery'
+React       = require 'react'
+util        = require './util.coffee'
+
+{CMQList, CMQListItem} = require './cmqlist.cjsx'
 
 QueueItem = React.createClass
   render: ->
-    subtitle = switch @props.length
-      when 0 then 'No people in the queue'
-      when 1 then '1 person in the queue'
-      else "#{@props.length} people in the queue"
-
-    <div className="cmq-queue-item">
-      <div className="cmq-queue-item-title">{@props.displayName}</div>
-      <div className="cmq-queue-item-subtitle">{subtitle}</div>
-    </div>
+    subtitle = util.queueCountToString @props.Spots.length
+    <CMQListItem title={@props.displayName} subtitle={subtitle}>
+      <div className="cmq-delete-queue" />
+    </CMQListItem>
 
 CreateQueueButton = React.createClass
   render: ->
-    <div className="cmq-queue-item">
-      <div className="cmq-queue-item-title">Create a new queue</div>
-    </div>
+    <CMQListItem title="Create a new queue" type="heading" />
 
 QueueList = React.createClass
   getInitialState: ->
     queues: [
       key: '15-131'
       displayName: '15-131'
-      owners: [
-          id: '321'
-          displayName: 'Jake Zimmerman'
-          givenName: 'Jake'
-          familyName: 'Zimmerman'
-          email: 'jezimmer@andrew.cmu.edu'
-        ,
-      ]
-      length: 1
+      Spots: []
     ]
 
-  # componentDidMount: ->
-  #   $.get '/api/queues', (data) =>
-  #     this.setState data
+  componentDidMount: ->
+    $.get '/api/queues', (data) =>
+      this.setState queues: data
 
   render: ->
-    queueListItems = @state.queues.map (queue, idx, arr) ->
+    queues = @state.queues.map (queue, idx, arr) ->
       <QueueItem {...queue} />
 
-    <div className="cmq-queue-list">
+    <CMQList>
       <CreateQueueButton />
-      {queueListItems}
-    </div>
+      {queues}
+    </CMQList>
 
 module.exports = QueueList
