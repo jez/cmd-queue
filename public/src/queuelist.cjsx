@@ -12,9 +12,7 @@ QueueItem = React.createClass
       @props.removeQueue @props.queue, @props.idx
 
     <CMQListItem title={@props.queue.displayName} subtitle={subtitle}>
-      <div className="cmq-delete-queue" onClick={onClick}>
-        &#x2715;
-      </div>
+      <div className="cmq-delete-queue" onClick={onClick}>&#x2715;</div>
     </CMQListItem>
 
 CreateQueueButton = React.createClass
@@ -53,7 +51,7 @@ QueueList = React.createClass
       success: =>
         newState = React.addons.update @state,
           queues:
-            $splice: [[idx, idx]]   # splice this queue out
+            $splice: [[idx, 1]]   # splice this queue out
 
         @setState newState
 

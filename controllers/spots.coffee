@@ -24,9 +24,9 @@ exports.create = (req, res, next) ->
       res.status(500).send null
 
 exports.destroy = (req, res, next) ->
-  id = req.params.id
+  key = req.params.key
 
-  models.Spot.destroy { where: { id: id }}
+  models.Spot.destroy { where: { key: key }}
     .then (affectedRows) ->
       res.status(204).send null
     .error (err) ->

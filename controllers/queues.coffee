@@ -2,12 +2,12 @@ models = require '../models'
 util   = require '../public/src/util'
 
 includeParams = [
-    model: models.Spot
-    include: [
-      model: models.User
-      as: 'Holder'
-    ]
+  model: models.Spot
+  include: [
+    model: models.User
+    as: 'Holder'
   ]
+]
 
 exports.index = (req, res, next) ->
   # -- no params --
@@ -80,7 +80,10 @@ exports.join = (req, res, next) ->
 
   models.Spot.create spot
     .then (spot) ->
-      res.location "/spots/#{spot.key}/"
+      models.Spot.findById spot.key, include: includeParams[0].include
+
+    .then (spot) ->
+      res.location "/api/spots/#{spot.key}"
       res.status(201).json spot
 
     .error (err) ->
