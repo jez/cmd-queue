@@ -26,7 +26,7 @@ Queue = React.createClass
       <Spot {...spot} />
 
     <CMQList>
-      <CMQListItem title={@props.displayName}
+      <CMQListItem title={@state.displayName}
           subtitle={queueCount} type="heading" />
       {spots}
     </CMQList>

@@ -1,0 +1,84 @@
+@import variables
+
+.modal-canvas
+  display: none
+
+  &.active
+    position: fixed
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    display: flex
+    justify-content: center
+    align-items: center
+
+    background-color: $bg-shadow
+    cursor: pointer
+
+.modal
+  margin-bottom: 10%
+
+  padding: 40px 30px
+  box-sizing: border-box
+  width: 450px
+
+  background-color: $bg-color
+  border-radius: 5px
+  box-shadow: 0 0px 20px $brand-color
+
+  cursor: auto
+
+  h1
+    margin-bottom: 30px
+
+    font-size: $font-size-title
+
+.modal-form
+  display: flex
+  flex-direction: column
+  align-items: center;
+  width: 100%
+
+.modal-input,
+.modal-button,
+.modal-warning
+  margin-bottom: 10px
+
+.modal-input,
+.modal-button
+  // Browser overrides
+  outline: none
+  -webkit-appearance: none
+  border: none
+
+  padding: 0 20px
+  height: 40px
+
+  font-size: $font-size
+  border-radius: 5px
+
+.modal-input
+  width: 100%
+  box-sizing: border-box
+
+  color: $fg-color
+  background-color: $bg-color-dark
+  box-shadow: rgba(255,255,255,0.1) 0 1px 0,rgba(0,0,0,0.8) 0 1px 7px 0px inset
+
+.modal-button
+  text-align: center
+
+  width: 100px
+
+  background-color: $brand-color
+  color: $fg-brand-color
+
+  &:hover
+    cursor: pointer
+
+.modal-warning
+  font-size: $font-size-subtitle
+  font-style: italic
+  color: $fg-subtitle-color
+  line-height: 1.4

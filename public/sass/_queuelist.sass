@@ -1,0 +1,28 @@
+.cmq-listitem .cmq-delete-queue
+  display: none
+
+.cmq-listitem:hover .cmq-delete-queue
+  display: block
+  position: absolute
+  top: 50%
+  right: 20px
+
+  // top is (-9 - 3)px, -9 for position, -3 to counter padding
+  margin: -15px -6px -6px -6px
+  // make it easier to hover over us
+  padding: 6px
+
+  &:hover::before
+    content: ''
+    display: block
+
+    position: absolute
+    // hack to line up the circle
+    top: -1px
+    right: -2px
+
+    width: 30px
+    height: 30px
+
+    background-color: rgba(0, 0, 0, 0.2)
+    border-radius: 15px;

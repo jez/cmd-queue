@@ -1,0 +1,38 @@
+$inset-border: 1px solid rgba(0, 0, 0, 0.7)
+
+.cmq-list
+  // offset from center
+  margin-bottom: 10%
+
+  width: 475px
+
+  border-bottom: $inset-border
+  box-shadow: rgba(255, 255, 255, 0.08) 0 1px
+
+.cmq-listheading
+  text-align: center
+
+.cmq-listitem
+  position: relative
+
+  padding: 25px
+  border-top: $inset-border
+  box-shadow: rgba(255, 255, 255, 0.08) 0 1px inset
+
+  &:active,
+  &:hover
+    cursor: pointer
+    background: rgba(255, 255, 255, 0.05)
+
+.cmq-listitem-title,
+.cmq-listitem-subtitle
+  line-height: 1.4
+
+.cmq-listitem-title
+  font-size: $font-size-title
+  color: $fg-title-color
+
+.cmq-listitem-subtitle
+  font-size: $font-size-subtitle
+  color: $fg-subtitle-color
+  font-style: italic
