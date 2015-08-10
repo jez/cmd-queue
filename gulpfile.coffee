@@ -52,7 +52,7 @@ gulp.task 'clean', (cb) ->
   del [CSS_DIR, JS_DIR], cb
 
 styles = (devMode) ->
-  result = gulp.src "#{SASS_DIR}/**/*.scss"
+  result = gulp.src "#{SASS_DIR}/**/*.s{a,c}ss"
 
   if devMode
     result = result.pipe sourcemaps.init()
@@ -126,7 +126,7 @@ gulp.task 'scripts',  -> scripts false
 gulp.task 'watchify', -> scripts true
 
 gulp.task 'watch', ['watchify', 'styles-dev'], ->
-  gulp.watch "#{SASS_DIR}/**/*.scss", ['styles-dev']
+  gulp.watch "#{SASS_DIR}/**/*.s{a,c}ss", ['styles-dev']
 
 gulp.task 'default', ->
   gulp.start 'styles', 'scripts'
