@@ -1,20 +1,26 @@
 models = require '../models'
 
+includeParams = [
+    model: models.Spot
+    include: [
+      model: models.User
+      as: 'Holder'
+    ]
+  ]
+
 exports.index = (req, res, next) ->
   # -- no params --
 
   # this is kind of an unfortunate query, but I'm not good enought at SQL nor
   # sequelize to be able to join all the queues and their lengths
-  models.Queue.findAll
-      include: [models.Spot]
+  models.Queue.findAll include: includeParams
     .then (queues) ->
       res.json queues
 
 exports.show = (req, res, next) ->
   key = req.params.key
 
-  models.Queue.findById key,
-      include: [models.Spot]
+  models.Queue.findById key, include: includeParams
     .then (queue) ->
       res.json queue
 
