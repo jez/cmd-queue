@@ -7,16 +7,16 @@ app    = require './controllers/app'
 
 router = express.Router()
 
-router.get    '/auth/login'           , auth.login
+router.get    '/auth/login'           , auth.storeNext, auth.login
 router.get    '/auth/google/callback' , auth.callback, auth.after
-router.get    '/auth/logout'          , auth.logout
+router.get    '/auth/logout'          , auth.ensureAuthenticated, auth.logout
 
 router.get    '/api/queues'           , queues.index
 router.get    '/api/queues/:key'      , queues.show
-router.post   '/api/queues'           , auth.ensureAuthenticated, queues.create
+router.post   '/api/queues'           , queues.create
 router.put    '/api/queues/:key'      , queues.modify
 router.delete '/api/queues/:key'      , queues.destroy
-router.post   '/api/queues/:key/join' , auth.ensureAuthenticated, queues.join
+router.post   '/api/queues/:key/join' , queues.join
 
 router.get    '/api/spots'            , spots.index
 router.get    '/api/spots/:key'       , spots.show
@@ -24,8 +24,9 @@ router.post   '/api/spots'            , spots.create
 router.delete '/api/spots/:key'       , spots.destroy
 
 router.get    '/'                     , app.app
-router.get    '/:key'                 , app.app
+router.get    '/:key'                 , auth.logInFirst, app.app
 
 module.exports = (app) ->
   # Register routers
+  app.use '/api', auth.ensureAuthenticated
   app.use '/', router

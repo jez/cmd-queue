@@ -13,22 +13,22 @@ Modal = React.createClass
     cancelled = true
     @props.callback cancelled
 
-  nop: (e) ->
+  nop: (ev) ->
     # Prevent click from bubbling up to blur
-    e.stopPropagation()
+    ev.stopPropagation()
 
-  changeDisplayName: (e) ->
+  changeDisplayName: (ev) ->
     @setState
-      displayName: e.target.value
-      key: util.slugify e.target.value
+      displayName: ev.target.value
+      key: util.slugify ev.target.value
 
-  changeKey: (e) ->
-    @setState valid: util.validateSlug e.target.value
+  changeKey: (ev) ->
+    @setState valid: util.validateSlug ev.target.value
 
-    @setState key: e.target.value
+    @setState key: ev.target.value
 
-  submit: (e) ->
-    e.preventDefault()
+  submit: (ev) ->
+    ev.preventDefault()
     return unless @state.valid
 
     @setState state: ''

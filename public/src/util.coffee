@@ -1,4 +1,5 @@
 # simple utility functions
+# all the functions here should be isomorphic
 
 exports.queueCountToString = (count) ->
   switch count
@@ -18,4 +19,13 @@ exports.validateSlug = (string) ->
   not string or
     ((!!string.match /^[A-Za-z0-9]+(?:[_-][A-Za-z0-9]+)*$/) and
     not (string.match /--/))
+
+exports.ownsQueue = (userId, queue) ->
+  queue.Owners.reduce (result, owner) ->
+    result ||= (owner.id == userId)
+    result
+  , false
+
+exports.holdsSpot = (userId, spot) ->
+  spot.HolderId == userId
 

@@ -2,11 +2,14 @@ models = require '../models'
 util   = require '../public/src/util'
 
 includeParams = [
-  model: models.Spot
-  include: [
+    model: models.Spot
+    include: [
+      model: models.User
+      as: 'Holder'
+    ]
+  ,
     model: models.User
-    as: 'Holder'
-  ]
+    as: 'Owners'
 ]
 
 exports.index = (req, res, next) ->
@@ -33,17 +36,17 @@ exports.create = (req, res, next) ->
     displayName: req.body.displayName
   user = req.user
 
-  unless util.validate queue.key
+  unless util.validateSlug queue.key
     res.status(500).send 'Invalid key for queue'
 
   models.Queue.create queue
     .then (queue) ->
       queue.addOwner user
-
     .then ->
+      models.Queue.findById queue.key, include: includeParams
+    .then (queue) ->
       res.location "/queues/#{queue.key}"
       res.status(201).json queue
-
     .error (err) ->
       # TODO better error message
       res.status(500).send null
@@ -65,6 +68,8 @@ exports.modify = (req, res, next) ->
   models.Queue.findById key
     .then (queue) ->
       queue.addOwners owners
+    .then ->
+      models.Queue.findById queue.key, include: includeParams
     .then (queue) ->
       res.status(204).json queue
     .error (err) ->
@@ -81,11 +86,9 @@ exports.join = (req, res, next) ->
   models.Spot.create spot
     .then (spot) ->
       models.Spot.findById spot.key, include: includeParams[0].include
-
     .then (spot) ->
       res.location "/api/spots/#{spot.key}"
       res.status(201).json spot
-
     .error (err) ->
       # TODO better error message
       res.status(500).send null

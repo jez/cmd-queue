@@ -1,6 +1,7 @@
-$           = require 'jquery'
-React       = require 'react/addons'
-util        = require './util.coffee'
+$       = require 'jquery'
+React   = require 'react/addons'
+util    = require './util.coffee'
+helpers = require './helpers.coffee'
 
 { AddButton, DoneButton } = require './buttons.cjsx'
 {List, ListItem} = require './list.cjsx'
@@ -9,8 +10,12 @@ Spot = React.createClass
   render: ->
     onClick = =>
       @props.removeSpot @props.spot, @props.idx
+
+    if @props.ownsQueue or util.holdsSpot userId, @props.spot
+      doneButton = <DoneButton onClick={onClick} />
+
     <ListItem title={@props.spot.Holder.displayName} subtitle={@props.spot.createdAt}>
-      <DoneButton onClick={onClick} />
+      {doneButton}
     </ListItem>
 
 QueueHeading = React.createClass
@@ -24,8 +29,10 @@ Queue = React.createClass
     key: '15-131'
     displayName: '15-131'
     Spots: []
+    Owners: []
 
   componentDidMount: ->
+    @setState userId: helpers.getUserId()
     $.get "/api/queues/#{@props.params.key}", (data) =>
       @setState data
 
@@ -49,8 +56,10 @@ Queue = React.createClass
 
   render: ->
     queueCount = util.queueCountToString @state.Spots.length
+    ownsQueue = util.ownsQueue @state.userId, @state
     spots = @state.Spots.map (spot, idx, arr) =>
-      <Spot key={spot.key} spot={spot} idx={idx} removeSpot={@removeSpot} />
+      <Spot key={spot.key} ownsQueue={ownsQueue} spot={spot} idx={idx}
+        removeSpot={@removeSpot} />
 
     <List>
       <QueueHeading title={@state.displayName} subtitle={queueCount} join={@join} />

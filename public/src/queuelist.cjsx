@@ -1,7 +1,8 @@
-$     = require 'jquery'
-React = require 'react/addons'
-Modal = require './modal.cjsx'
-util  = require './util.coffee'
+$       = require 'jquery'
+React   = require 'react/addons'
+Modal   = require './modal.cjsx'
+util    = require './util.coffee'
+helpers = require './helpers.coffee'
 
 { Link } = require 'react-router'
 
@@ -11,13 +12,16 @@ util  = require './util.coffee'
 QueueItem = React.createClass
   render: ->
     subtitle = util.queueCountToString @props.queue.Spots.length
-    onClick = (e) =>
-      e.preventDefault()
+    onClick = (ev) =>
+      ev.preventDefault()
       @props.removeQueue @props.queue, @props.idx
+
+    if util.ownsQueue @props.userId, @props.queue
+      deleteButton = <DeleteButton onClick={onClick} />
 
     <Link to="queue" params={@props.queue}>
       <ListItem title={@props.queue.displayName} subtitle={subtitle}>
-        <DeleteButton onClick={onClick} />
+        {deleteButton}
       </ListItem>
     </Link>
 
@@ -39,6 +43,7 @@ QueueList = React.createClass
       key: '15-131'
       displayName: '15-131'
       Spots: []
+      Owners: []
     ]
 
   addQueue: (queue) ->
@@ -62,12 +67,13 @@ QueueList = React.createClass
         @setState newState
 
   componentDidMount: ->
+    @setState userId: helpers.getUserId()
     $.get '/api/queues', (data) =>
       @setState queues: data
 
   render: ->
     queues = @state.queues.map (queue, idx, arr) =>
-      <QueueItem key={queue.key} queue={queue} idx={idx}
+      <QueueItem userId={@state.userId} key={queue.key} queue={queue} idx={idx}
         removeQueue={@removeQueue} />
 
     <List>

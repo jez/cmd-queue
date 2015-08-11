@@ -12,7 +12,11 @@ block content
       .cq-brand
         a(href="/") ⌘ + Queue
       .cq-nav
-  #cq-target
+        if loggedIn
+          a(href="/auth/logout") Log out
+        else
+          a(href="/auth/login") Log in
+  #cq-target(data-user-id=userId)
   #modal-target
 
 block scripts
