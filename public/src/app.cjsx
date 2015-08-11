@@ -6,18 +6,18 @@ Queue     = require './queue.cjsx'
 
 {DefaultRoute, Link, Route, RouteHandler} = Router
 
-CMQueue = React.createClass
+CmdQueue = React.createClass
   render: ->
-    <div className="cmq-wrapper">
+    <div className="cq-wrapper">
       <RouteHandler />
     </div>
 
 routes =
-  <Route name="queues" path="/" handler={CMQueue}>
+  <Route name="queues" path="/" handler={CmdQueue}>
     <Route name="queue" path=":key" handler={Queue} />
     <DefaultRoute handler={QueueList} />
   </Route>
 
 $(document).ready ->
   Router.run routes, Router.HistoryLocation, (Handler) ->
-    React.render <Handler />, $('#cmq-target')[0]
+    React.render <Handler />, $('#cq-target')[0]

@@ -1,0 +1,80 @@
+$diameter: 34px
+
+.cq-add-button,
+.cq-delete-button,
+.cq-done-button
+  position: absolute
+  top: 50%
+  right: 20px
+  margin-top: - $diameter / 2
+
+  width: $diameter
+  height: $diameter
+
+  &:hover
+    cursor: pointer
+
+    & .cq-circle-icon
+        background: $brand-color
+
+    & .cq-checkmark-stem-icon,
+    & .cq-checkmark-kick-icon
+        background-color: $fg-brand-color
+
+    & .cq-plus-icon,
+    & .cq-x-icon
+      color: $fg-brand-color
+
+.cq-add-button,
+.cq-done-button
+  transform: rotate(45deg)
+
+.cq-listitem .cq-delete-button
+  display: none
+
+.cq-listitem:hover .cq-delete-button
+  display: block
+
+.cq-circle-icon
+  position: absolute
+  left: 0
+  top: 0
+
+  box-sizing: border-box
+  width: $diameter
+  height: $diameter
+
+  border: 2px solid $brand-color
+  border-radius: ($diameter / 2) + 1
+
+.cq-checkmark-stem-icon,
+.cq-checkmark-kick-icon
+  position: absolute
+  background-color: $fg-color
+
+.cq-checkmark-stem-icon
+  left: 19px
+  top: 9px
+
+  width: 2px
+  height: 15px
+
+.cq-checkmark-kick-icon
+  left: 13px
+  top: 22px
+
+  width: 6px
+  height: 2px
+
+.cq-plus-icon,
+.cq-x-icon
+  position: absolute
+  font-size: 20px
+
+.cq-plus-icon,
+  top: 7px
+  left: 10px
+
+.cq-x-icon,
+  top: 8px
+  left: 10px

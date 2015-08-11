@@ -1,9 +1,8 @@
 # Module dependencies.
 
-app = require '../app'
-http = require 'http'
-
 models = require '../models'
+app = require('../app')(models.sequelize)
+http = require 'http'
 
 # Normalize a port into a number, string, or false.
 

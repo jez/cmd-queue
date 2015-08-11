@@ -1,6 +1,6 @@
 $inset-border: 1px solid rgba(0, 0, 0, 0.7)
 
-.cmq-list
+.cq-list
   // offset from center
   margin-bottom: 10%
 
@@ -9,10 +9,10 @@ $inset-border: 1px solid rgba(0, 0, 0, 0.7)
   border-bottom: $inset-border
   box-shadow: rgba(255, 255, 255, 0.08) 0 1px
 
-.cmq-listheading
+.cq-listheading
   text-align: center
 
-.cmq-listitem
+.cq-listitem
   position: relative
 
   padding: 25px
@@ -21,20 +21,24 @@ $inset-border: 1px solid rgba(0, 0, 0, 0.7)
   border-top: $inset-border
   box-shadow: rgba(255, 255, 255, 0.08) 0 1px inset
 
+// turn on clickable features when it's a link or button
+a .cq-listitem,
+.cq-listitem.button
   &:active,
   &:hover
     cursor: pointer
     background: rgba(255, 255, 255, 0.05)
 
-.cmq-listitem-title,
-.cmq-listitem-subtitle
+
+.cq-listitem-title,
+.cq-listitem-subtitle
   line-height: 1.4
 
-.cmq-listitem-title
+.cq-listitem-title
   font-size: $font-size-title
   color: $fg-title-color
 
-.cmq-listitem-subtitle
+.cq-listitem-subtitle
   font-size: $font-size-subtitle
   color: $fg-subtitle-color
   font-style: italic

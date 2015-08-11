@@ -3,17 +3,23 @@ React = require 'react/addons'
 Modal = require './modal.cjsx'
 util  = require './util.coffee'
 
-{CMQList, CMQListItem} = require './cmqlist.cjsx'
+{ Link } = require 'react-router'
+
+{ DeleteButton } = require './buttons.cjsx'
+{List, ListItem} = require './list.cjsx'
 
 QueueItem = React.createClass
   render: ->
     subtitle = util.queueCountToString @props.queue.Spots.length
-    onClick = =>
+    onClick = (e) =>
+      e.preventDefault()
       @props.removeQueue @props.queue, @props.idx
 
-    <CMQListItem title={@props.queue.displayName} subtitle={subtitle}>
-      <div className="cmq-delete-queue" onClick={onClick}>&#x2715;</div>
-    </CMQListItem>
+    <Link to="queue" params={@props.queue}>
+      <ListItem title={@props.queue.displayName} subtitle={subtitle}>
+        <DeleteButton onClick={onClick} />
+      </ListItem>
+    </Link>
 
 CreateQueueButton = React.createClass
   click: ->
@@ -25,7 +31,7 @@ CreateQueueButton = React.createClass
     React.render <Modal callback={callback} />, $('#modal-target')[0]
 
   render: ->
-    <CMQListItem type="heading" title="Create a new queue" onClick={@click} />
+    <ListItem type="heading" title="Create a new queue" onClick={@click} />
 
 QueueList = React.createClass
   getInitialState: ->
@@ -64,9 +70,9 @@ QueueList = React.createClass
       <QueueItem key={queue.key} queue={queue} idx={idx}
         removeQueue={@removeQueue} />
 
-    <CMQList>
+    <List>
       <CreateQueueButton addQueue={@addQueue} />
       {queues}
-    </CMQList>
+    </List>
 
 module.exports = QueueList

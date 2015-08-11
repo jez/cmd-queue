@@ -2,28 +2,22 @@ $           = require 'jquery'
 React       = require 'react/addons'
 util        = require './util.coffee'
 
-{CMQList, CMQListItem} = require './cmqlist.cjsx'
+{ AddButton, DoneButton } = require './buttons.cjsx'
+{List, ListItem} = require './list.cjsx'
 
 Spot = React.createClass
   render: ->
     onClick = =>
       @props.removeSpot @props.spot, @props.idx
-    <CMQListItem title={@props.spot.Holder.displayName} subtitle={@props.spot.createdAt}>
-      <div className="cmq-delete-spot" onClick={onClick}>
-        <div className="checkmark-circle" />
-        <div className="checkmark-stem" />
-        <div className="checkmark-kick" />
-      </div>
-    </CMQListItem>
+    <ListItem title={@props.spot.Holder.displayName} subtitle={@props.spot.createdAt}>
+      <DoneButton onClick={onClick} />
+    </ListItem>
 
 QueueHeading = React.createClass
   render: ->
-    <CMQListItem {...@props} type="heading">
-      <div className="cmq-join-queue" onClick={@props.join}>
-        <div className="checkmark-circle" />
-        <div className="checkmark-plus">&#x2715;</div>
-      </div>
-    </CMQListItem>
+    <ListItem {...@props} type="heading">
+      <AddButton onClick={@props.join} />
+    </ListItem>
 
 Queue = React.createClass
   getInitialState: ->
@@ -58,9 +52,9 @@ Queue = React.createClass
     spots = @state.Spots.map (spot, idx, arr) =>
       <Spot key={spot.key} spot={spot} idx={idx} removeSpot={@removeSpot} />
 
-    <CMQList>
+    <List>
       <QueueHeading title={@state.displayName} subtitle={queueCount} join={@join} />
       {spots}
-    </CMQList>
+    </List>
 
 module.exports = Queue
