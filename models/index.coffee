@@ -5,6 +5,11 @@ basename  = path.basename module.filename
 env       = process.env.NODE_ENV || 'development'
 config    = require("#{__dirname}/../db")[env]
 db        = {}
+
+console.log process.env.NODE_ENV
+console.log process.env.DATABASE_URL
+console.log config
+
 sequelize =
   if config.uri
     new Sequelize config.uri
