@@ -3,9 +3,13 @@ path      = require 'path'
 Sequelize = require 'sequelize'
 basename  = path.basename module.filename
 env       = process.env.NODE_ENV || 'development'
-config    = require("#{__dirname}/../db.json")[env]
-sequelize = new Sequelize config.database, config.username, config.password, config
+config    = require("#{__dirname}/../db")[env]
 db        = {}
+sequelize =
+  if config.uri
+    new Sequelize config.uri
+  else
+    new Sequelize config.database, config.username, config.password, config
 
 fs
   .readdirSync __dirname
