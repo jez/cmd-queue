@@ -16,7 +16,7 @@ QueueItem = React.createClass
       ev.preventDefault()
       @props.removeQueue @props.queue, @props.idx
 
-    if util.ownsQueue @props.userId, @props.queue
+    if util.isInOwners @props.userId, @props.queue.Owners
       deleteButton = <DeleteButton onClick={onClick} />
 
     <Link to="queue" params={@props.queue}>
@@ -40,8 +40,8 @@ CreateQueueButton = React.createClass
 QueueList = React.createClass
   getInitialState: ->
     queues: [
-      key: '15-131'
-      displayName: '15-131'
+      key: ''
+      displayName: 'Loading...'
       Spots: []
       Owners: []
     ]

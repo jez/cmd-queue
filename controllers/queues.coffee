@@ -1,3 +1,4 @@
+_      = require 'underscore'
 models = require '../models'
 util   = require '../public/src/util'
 
@@ -52,11 +53,19 @@ exports.create = (req, res, next) ->
       res.status(500).send null
 
 exports.destroy = (req, res, next) ->
-  key = req.params.key
+  key    = req.params.key
+  userId = req.user.id
 
-  models.Queue.destroy { where: { key: key }}
+  # Ideally we wouldn't have to make two SQL queries here :(
+  models.Queue.findById key, include: includeParams[1]
+    .then (queue) ->
+      if util.isInOwners userId, queue.Owners
+        models.Queue.destroy { where: { key: key }}
     .then (n) ->
-      res.status(204).send null
+      if n? and n > 0
+        res.status(204).send null
+      else
+        res.status(404).send 'No queues matching search query.'
     .error (err) ->
       # TODO better error message
       res.status(500).send null
@@ -64,10 +73,12 @@ exports.destroy = (req, res, next) ->
 exports.modify = (req, res, next) ->
   key    = req.params.key
   owners = req.body.owners
+  userId = req.user.id
 
   models.Queue.findById key
     .then (queue) ->
-      queue.addOwners owners
+      if util.isInOwners userId, queue.getOwners()
+        queue.addOwners owners
     .then ->
       models.Queue.findById queue.key, include: includeParams
     .then (queue) ->
@@ -79,16 +90,23 @@ exports.modify = (req, res, next) ->
 # non-RESTful endpoints
 
 exports.join = (req, res, next) ->
+  userId = req.user.id
+  key    = req.params.key
   spot =
-    QueueKey: req.params.key
-    HolderId: req.user.id
+    QueueKey: key
+    HolderId: userId
 
-  models.Spot.create spot
-    .then (spot) ->
-      models.Spot.findById spot.key, include: includeParams[0].include
-    .then (spot) ->
-      res.location "/api/spots/#{spot.key}"
-      res.status(201).json spot
+  models.Queue.findById key, include: includeParams[0]
+    .then (queue) ->
+      if not util.isInQueue(userId, queue.Spots)
+        models.Spot.create spot
+          .then (spot) ->
+            models.Spot.findById spot.key, include: includeParams[0].include
+          .then (spot) ->
+            res.location "/api/spots/#{spot.key}"
+            res.status(201).json spot
+      else
+        res.status(409).send "You can't hold multiple spots in the same queue."
     .error (err) ->
       # TODO better error message
       res.status(500).send null

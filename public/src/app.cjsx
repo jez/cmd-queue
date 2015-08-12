@@ -22,7 +22,6 @@ routes =
 
 $(document).ready ->
   $(document).ajaxError (ev, jqXHR, settings, error) =>
-    console.log jqXHR.status
     if jqXHR.status == 401
       window.location.href = '/auth/login'
 

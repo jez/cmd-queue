@@ -1,6 +1,8 @@
 # simple utility functions
 # all the functions here should be isomorphic
 
+_ = require 'underscore'
+
 exports.queueCountToString = (count) ->
   switch count
     when 0 then 'No people in the queue'
@@ -20,12 +22,11 @@ exports.validateSlug = (string) ->
     ((!!string.match /^[A-Za-z0-9]+(?:[_-][A-Za-z0-9]+)*$/) and
     not (string.match /--/))
 
-exports.ownsQueue = (userId, queue) ->
-  queue.Owners.reduce (result, owner) ->
-    result ||= (owner.id == userId)
-    result
-  , false
+exports.isInOwners = (userId, owners) ->
+  !!_.find owners, ((owner) -> owner.id == userId)
 
 exports.holdsSpot = (userId, spot) ->
   spot.HolderId == userId
 
+exports.isInQueue = (userId, spots) ->
+  !!_.find spots, ((spot) -> spot.HolderId == userId)

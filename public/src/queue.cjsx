@@ -11,7 +11,7 @@ Spot = React.createClass
     onClick = =>
       @props.removeSpot @props.spot, @props.idx
 
-    if @props.ownsQueue or util.holdsSpot userId, @props.spot
+    if @props.ownsQueue or @props.holdsSpot @props.spot
       doneButton = <DoneButton onClick={onClick} />
 
     <ListItem title={@props.spot.Holder.displayName} subtitle={@props.spot.createdAt}>
@@ -20,14 +20,16 @@ Spot = React.createClass
 
 QueueHeading = React.createClass
   render: ->
+    if @props.join
+      addButton = <AddButton onClick={@props.join} />
     <ListItem {...@props} type="heading">
-      <AddButton onClick={@props.join} />
+      {addButton}
     </ListItem>
 
 Queue = React.createClass
   getInitialState: ->
-    key: '15-131'
-    displayName: '15-131'
+    key: ''
+    displayName: 'Loading...'
     Spots: []
     Owners: []
 
@@ -56,13 +58,17 @@ Queue = React.createClass
 
   render: ->
     queueCount = util.queueCountToString @state.Spots.length
-    ownsQueue = util.ownsQueue @state.userId, @state
-    spots = @state.Spots.map (spot, idx, arr) =>
-      <Spot key={spot.key} ownsQueue={ownsQueue} spot={spot} idx={idx}
-        removeSpot={@removeSpot} />
 
+    ownsQueue = util.isInOwners @state.userId, @state.Owners
+    holdsSpot = (spot) => util.holdsSpot @state.userId, spot
+    spots = @state.Spots.map (spot, idx, arr) =>
+      <Spot key={spot.key} spot={spot} idx={idx}
+        holdsSpot={holdsSpot} ownsQueue={ownsQueue} removeSpot={@removeSpot} />
+
+    canJoin = not util.isInQueue(@state.userId, @state.Spots)
     <List>
-      <QueueHeading title={@state.displayName} subtitle={queueCount} join={@join} />
+      <QueueHeading title={@state.displayName} subtitle={queueCount}
+        join={@join if canJoin} />
       {spots}
     </List>
 
