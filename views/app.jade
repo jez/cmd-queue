@@ -16,6 +16,12 @@ block content
           a(href="/auth/logout") Log out
         else
           a(href="/auth/login") Log in
+  if !loggedIn
+    .cq-landing
+      .cq-landing-wrapper
+        h1.cq-title ⌘ + Queue
+        h2.cq-subtitle sign in with your Andrew account to join, create, or browse queues
+        a.cq-github-link(href="#") GitHub
   #cq-target(data-user-id=userId)
   #modal-target
 
