@@ -11,7 +11,8 @@ $diameter: 34px
   width: $diameter
   height: $diameter
 
-  &:hover
+  &:hover,
+  &:active
     cursor: pointer
 
     & .cq-circle-icon
@@ -28,12 +29,6 @@ $diameter: 34px
 .cq-add-button,
 .cq-done-button
   transform: rotate(45deg)
-
-.cq-listitem .cq-delete-button
-  display: none
-
-.cq-listitem:hover .cq-delete-button
-  display: block
 
 .cq-circle-icon
   position: absolute
@@ -78,3 +73,12 @@ $diameter: 34px
 .cq-x-icon,
   top: 8px
   left: 10px
+
+// only hide unhovered buttons on large screens
+@media (min-width: 768px)
+  .cq-listitem .cq-delete-button
+    display: none
+
+.cq-listitem:hover .cq-delete-button
+  display: block
+
