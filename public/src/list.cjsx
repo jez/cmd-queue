@@ -15,7 +15,6 @@ ListItem = React.createClass
     if @props.onClick
       classes += ' button'
 
-    # TODO: add links
     <div className="cq-listitem #{classes}" onClick={@props.onClick}>
       {@props.children}
       <div className="cq-listitem-title">{@props.title}</div>
