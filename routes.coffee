@@ -3,7 +3,7 @@ express = require 'express'
 auth   = require './controllers/auth'
 queues = require './controllers/queues'
 spots  = require './controllers/spots'
-app    = require './controllers/app'
+main   = require './controllers/app'
 
 router = express.Router()
 
@@ -23,11 +23,11 @@ router.get    '/api/spots/:key'       , spots.show
 router.post   '/api/spots'            , spots.create
 router.delete '/api/spots/:key'       , spots.destroy
 
-router.get    '/'                     , app.app
-router.get    '/:key'                 , auth.logInFirst, app.app
+router.get    '/'                     , main.app
+router.get    '/:key'                 , auth.logInFirst, main.app
 
 module.exports = (app) ->
   # Register routers
-  app.use app.forceHTTPS
+  app.use main.forceHTTPS
   app.use '/api', auth.ensureAuthenticated
   app.use '/', router
