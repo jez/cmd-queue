@@ -1,7 +1,5 @@
 #/usr/bin/env bash
 
-echo $NODE_ENV
-
 if [ "$NODE_ENV" = "development" ] && which nodemon &> /dev/null ; then
   nodemon -e js,coffee ./bin/start.js
 else
