@@ -2,6 +2,8 @@ passport       = require 'passport'
 GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 models         = require './models'
 
+hostname       = ''
+
 # Passport session setup.
 #   To support persistent login sessions, Passport needs to be able to
 #   serialize users into and deserialize users out of the session.  Typically,
@@ -22,7 +24,7 @@ passport.deserializeUser (id, done) ->
 passport.use new GoogleStrategy
   clientID: process.env.GOOGLE_CLIENT_ID
   clientSecret: process.env.GOOGLE_CLIENT_SECRET
-  callbackURL: 'http://localhost:3000/auth/google/callback'
+  callbackURL: "#{hostname}/auth/google/callback"
 , (accessToken, refreshToken, profile, done) ->
   # This is an array, but we need just a single email, so let's at least be
   # smart about which array element we take.
@@ -44,5 +46,6 @@ passport.use new GoogleStrategy
       done err, null
 
 module.exports = (app) ->
+  hostname = app.get 'hostname'
   app.use passport.initialize()
   app.use passport.session()

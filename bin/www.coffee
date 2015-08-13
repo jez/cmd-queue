@@ -52,6 +52,11 @@ onListening = ->
 port = normalizePort(process.env.PORT || '3000')
 app.set 'port', port
 
+if process.env.HOSTNAME
+  app.set 'hostname', process.env.HOSTNAME
+else
+  app.set 'hostname', "http://localhost:#{app.get 'port'}"
+
 # Validate that relevant config has been set
 
 fail = (message, status) ->
