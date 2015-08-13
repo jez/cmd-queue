@@ -6,10 +6,6 @@ env       = process.env.NODE_ENV || 'development'
 config    = require("#{__dirname}/../db")[env]
 db        = {}
 
-console.log "NODE_ENV: #{process.env.NODE_ENV}"
-console.log "DATABASE_URL: #{process.env.DATABASE_URL}"
-console.log config
-
 sequelize =
   if config.uri
     new Sequelize config.uri

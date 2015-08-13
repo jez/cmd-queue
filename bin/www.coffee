@@ -61,10 +61,6 @@ fail = (message, status) ->
 fail 'Google client id not set'     unless process.env.GOOGLE_CLIENT_ID
 fail 'Google client secret not set' unless process.env.GOOGLE_CLIENT_SECRET
 
-{GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NODE_ENV, DATABASE_URL} = process.env
-
-console.log {GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NODE_ENV, DATABASE_URL}
-
 # Create HTTP server.
 
 server = http.createServer app
