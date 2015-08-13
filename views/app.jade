@@ -4,9 +4,6 @@ block head
   link(rel="stylesheet", href="/css/main.css")
 
 block content
-  noscript
-    h1.noscript Whoa there!
-    p.noscript ⌘ + Queue makes heavy use of JavaScript.
   header
     .cq-header-wrapper
       .cq-brand
@@ -20,6 +17,8 @@ block content
     .cq-landing
       .cq-landing-wrapper
         h1.cq-title ⌘ + Queue
+        noscript
+          h2.cq-subtitle Whoa there! ⌘ + Queue makes heavy use of JavaScript.
         h2.cq-subtitle sign in with your Andrew account to join, create, or browse queues
         a.cq-github-link(href="#") GitHub
   #cq-target(data-user-id=userId)
