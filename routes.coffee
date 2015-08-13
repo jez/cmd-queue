@@ -28,6 +28,7 @@ router.get    '/:key'                 , auth.logInFirst, main.app
 
 module.exports = (app) ->
   # Register routers
-  app.use main.forceHTTPS
+  # HTTPS redirects temporarily disabled. See controllers/app.coffee
+  #app.use main.forceHTTPS
   app.use '/api', auth.ensureAuthenticated
   app.use '/', router
