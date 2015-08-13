@@ -28,5 +28,6 @@ router.get    '/:key'                 , auth.logInFirst, app.app
 
 module.exports = (app) ->
   # Register routers
+  app.use app.forceHTTPS
   app.use '/api', auth.ensureAuthenticated
   app.use '/', router
