@@ -3,6 +3,7 @@ exports.forceHTTPS = (req, res, next) ->
   console.log req.secure
   console.log process.env.NODE_ENV
   if !req.secure && process.env.NODE_ENV == 'production'
+    console.log "https://#{req.headers.host}#{req.url}"
     res.redirect "https://#{req.headers.host}#{req.url}"
   else
     next()
