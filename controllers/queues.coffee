@@ -8,9 +8,9 @@ includeParams = [
       model: models.User
       as: 'Holder'
     ]
-  ,
-    model: models.User
-    as: 'Owners'
+  #  ,
+  #    model: models.User
+  #    as: 'Owners'
 ]
 
 exports.index = (req, res, next) ->
