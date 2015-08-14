@@ -19,14 +19,14 @@ exports.handleErrors = (err, req, res, next) ->
     message: err.message
     route:   req.path
     status:  err.status  or 500
-    trace:   err.trace
+    trace:   err.stack
     tag:     err.type    or 'error'
     UserId:  if req.user then req.user.id else null
 
   models.Exception.create ex
     .then (ex) ->
       # log exception and trace
-      console.error "[#{ex.createdAt}] [#{ex.tag}] [#{ex.status}] [#{ex.message}]"
+      console.error "[#{ex.createdAt}] [#{ex.tag}] [#{ex.status}] [#{ex.message}] [#{ex.id}]"
       console.error ex.trace
 
       # optionally send notification emails through Mailgun
@@ -54,8 +54,9 @@ exports.handleErrors = (err, req, res, next) ->
             id:      ex.id
             message: ex.message
         else
+          console.log ex
           res.status ex.status
-          res.render 'error', ex
+          res.render 'error', ex: ex
 
 # ----- RESTful routes -----
 

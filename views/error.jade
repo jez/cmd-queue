@@ -6,11 +6,11 @@ block head
 block content
   .cq-landing
     .cq-landing-wrapper
-      h1.cq-title #{status} Error
-      h2.cq-subtitle= message
-      if trace
-        pre= trace
+      h1.cq-title #{ex.status} Error
+      h2.cq-subtitle= ex.message
+      if ex.trace
+        pre= ex.trace
       p.
         There's been an error with ⌘ + Queue. The administrators have been
         notified. If you decide to contact them as well, please send this token:
-        #{id}
+        #{ex.id}
