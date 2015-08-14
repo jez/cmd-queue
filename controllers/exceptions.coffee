@@ -35,12 +35,11 @@ exports.handleErrors = (err, req, res, next) ->
         link = "http://#{req.headers.host}/admin/exceptions/#{ex.id}"
         body = "Oh noes, there was an error in ⌘ + Queue!
 
-          <a href=\"#{link}\">#{link}</a>
+          #{link}
 
           #{ex.message}
-          <pre>
+
           #{ex.trace}
-          </pre>
           "
 
         mg.sendText config.mailgunFrom,
@@ -71,12 +70,19 @@ exports.handleErrors = (err, req, res, next) ->
 # ----- RESTful routes -----
 
 # TODO: Fancy admin panel screen
-#exports.index = (req, res, next) ->
+exports.index = (req, res, next) ->
+  models.Exception.findAll()
+    .then (exceptions) ->
+      res.json exceptions
+
 
 exports.show = (req, res, next) ->
   id = req.params.id
 
   models.Exception.findById id
     .then (ex) ->
-      res.render 'error', ex
+      if ex
+        res.render 'error', ex
+      else
+        res.status(404).send 'Exception not found'
 
