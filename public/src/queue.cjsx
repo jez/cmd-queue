@@ -47,7 +47,7 @@ Queue = React.createClass
       @setState newState
 
   removeSpot: (spot, idx) ->
-    $.ajax "/api/spots/#{spot.key}",
+    $.ajax "/api/slots/#{spot.key}",
       method: 'DELETE'
       success: =>
         newState = React.addons.update @state,

@@ -19,10 +19,13 @@ router.put    '/api/queues/:key'      , queues.modify
 router.delete '/api/queues/:key'      , queues.destroy
 router.post   '/api/queues/:key/join' , queues.join
 
-router.get    '/api/spots'            , spots.index
-router.get    '/api/spots/:key'       , spots.show
-router.post   '/api/spots'            , spots.create
-router.delete '/api/spots/:key'       , spots.destroy
+# Why is this called /api/slots not /api/spots? Well, funny you ask!
+# It turns out my adblocker (uBlock Origin) blocks /api/spots! Why?
+# WHO FLIPPIN KNOWS >:O
+router.get    '/api/slots'            , spots.index
+router.get    '/api/slots/:key'       , spots.show
+router.post   '/api/slots'            , spots.create
+router.delete '/api/slots/:key'       , spots.destroy
 
 router.get    '/admin/exceptions/:id' , exceptions.show
 
