@@ -1,23 +1,9 @@
 # Module dependencies.
 
 models = require '../models'
-app = require('../app')(models.sequelize)
-http = require 'http'
-
-# Normalize a port into a number, string, or false.
-
-normalizePort = (val) ->
-  port = parseInt val, 10
-
-  if isNaN port
-    # named pipe
-    return val
-
-  if port >= 0
-    # port number
-    return port
-
-  false
+app    = require('../app')(models.sequelize)
+http   = require 'http'
+config = require '../config'
 
 # Event listener for HTTP server "error" event.
 
@@ -47,27 +33,9 @@ onListening = ->
   bind = if typeof addr == 'string' then 'pipe ' + addr else 'port ' + addr.port
   console.log "Listening on #{bind}"
 
-# Get port from environment and store in Express.
-
-port = normalizePort(process.env.PORT || '3000')
-app.set 'port', port
-
-if process.env.HOSTNAME
-  app.set 'hostname', process.env.HOSTNAME
-else
-  app.set 'hostname', "http://localhost:#{app.get 'port'}"
-
-# Validate that relevant config has been set
-
-fail = (message, status) ->
-  console.error "[error] #{message}. Read the README for more information."
-  process.exit(status || 1)
-
-fail 'Google client id not set'     unless process.env.GOOGLE_CLIENT_ID
-fail 'Google client secret not set' unless process.env.GOOGLE_CLIENT_SECRET
-
 # Create HTTP server.
 
+app.set 'port', config.port
 server = http.createServer app
 server.on 'error', onError
 server.on 'listening', onListening
@@ -75,4 +43,4 @@ server.on 'listening', onListening
 # Listen on provided port, on all network interfaces.
 
 models.sequelize.sync().then ->
-  server.listen port
+  server.listen config.port

@@ -2,8 +2,7 @@ fs        = require 'fs'
 path      = require 'path'
 Sequelize = require 'sequelize'
 basename  = path.basename module.filename
-env       = process.env.NODE_ENV || 'development'
-config    = require("#{__dirname}/../db")[env]
+config    = require('../config').db
 db        = {}
 
 sequelize =

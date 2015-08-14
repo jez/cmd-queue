@@ -4,11 +4,13 @@
 #
 # Instead, I'm requiring HTTPS through CloudFlare page rules, a hacky but
 # effective solution
+#config = require '../config'
+#
 #exports.forceHTTPS = (req, res, next) ->
 #  # redirect to HTTPS in production, take care of Heroku's special https
 #  # handling
 #  if not (req.secure or (req.header('x-forwarded-proto') == 'https')) and
-#      process.env.NODE_ENV == 'production'
+#      config.nodeEnv == 'production'
 #    res.redirect "https://#{req.headers.host}#{req.url}"
 #  else
 #    next()
