@@ -8,9 +8,9 @@ includeParams = [
       model: models.User
       as: 'Holder'
     ]
-  #  ,
-  #    model: models.User
-  #    as: 'Owners'
+  ,
+    model: models.User
+    as: 'Owners'
 ]
 
 exports.index = (req, res, next) ->
@@ -20,7 +20,6 @@ exports.index = (req, res, next) ->
   # sequelize to be able to join all the queues and their lengths
   models.Queue.findAll
       include: includeParams
-      order: 'Queue.displayName ASC'
     .then (queues) ->
       res.json queues
 
