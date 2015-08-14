@@ -82,7 +82,7 @@ exports.show = (req, res, next) ->
   models.Exception.findById id
     .then (ex) ->
       if ex
-        res.render 'error', ex
+        res.render 'error', ex: ex
       else
         res.status(404).send 'Exception not found'
 
