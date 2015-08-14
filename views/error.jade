@@ -4,13 +4,13 @@ block head
   link(rel="stylesheet", href="/css/error.css")
 
 block content
-  .cq-landing
-    .cq-landing-wrapper
-      h1.cq-title #{ex.status} Error
-      h2.cq-subtitle= ex.message
-      if ex.trace
-        pre= ex.trace
-      p.
-        There's been an error with ⌘ + Queue. The administrators have been
-        notified. If you decide to contact them as well, please send this token:
-        #{ex.id}
+  .cq-landing-errors
+    h1.cq-title #{ex.status} Error
+    h2.cq-subtitle= ex.message
+    if ex.trace
+      pre= ex.trace
+    p.
+      There's been an error with ⌘ + Queue. The administrators have been
+      notified. If you decide to contact them as well, please send this token:
+    p
+      code= ex.id

@@ -31,8 +31,17 @@ exports.handleErrors = (err, req, res, next) ->
 
       # optionally send notification emails through Mailgun
       if mg and (ex.status >= 500)
-        subject = "[cq-errors] #{ex.message}"
-        body = JSON.stringify ex.trace, null, 2
+        subject = "[cq-errors] #{ex.status}: #{ex.message}"
+        link = "http://#{req.headers.host}/admin/exceptions/#{ex.id}"
+        body = "Oh noes, there was an error in ⌘ + Queue!
+
+          <a href=\"#{link}\">#{link}</a>
+
+          #{ex.message}
+          <pre>
+          #{ex.trace}
+          </pre>
+          "
 
         mg.sendText config.mailgunFrom,
           config.mailgunTo,
@@ -54,7 +63,6 @@ exports.handleErrors = (err, req, res, next) ->
             id:      ex.id
             message: ex.message
         else
-          console.log ex
           res.status ex.status
           res.render 'error', ex: ex
 
