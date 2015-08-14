@@ -1,4 +1,5 @@
 $       = require 'jquery'
+moment  = require 'moment'
 React   = require 'react/addons'
 util    = require './util.coffee'
 helpers = require './helpers.coffee'
@@ -14,7 +15,9 @@ Spot = React.createClass
     if @props.ownsQueue or @props.holdsSpot @props.spot
       doneButton = <DoneButton onClick={onClick} />
 
-    <ListItem title={@props.spot.Holder.displayName} subtitle={@props.spot.createdAt}>
+    waitTime = "has been waiting for #{moment(@props.spot.createdAt).fromNow(true)}"
+
+    <ListItem title={@props.spot.Holder.displayName} subtitle={waitTime}>
       {doneButton}
     </ListItem>
 
