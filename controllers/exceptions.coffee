@@ -55,6 +55,7 @@ exports.handleErrors = (err, req, res, next) ->
       if config.nodeEnv == 'production'
         delete ex.trace
 
+      console.log ex
       switch ex.type
         when 'json-error'
           res.status ex.status
@@ -63,6 +64,7 @@ exports.handleErrors = (err, req, res, next) ->
             id:      ex.id
             message: ex.message
         else
+          console.log ex.status
           res.status ex.status
           res.render 'error', ex: ex
 
