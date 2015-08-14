@@ -69,7 +69,8 @@ QueueList = React.createClass
   componentDidMount: ->
     @setState userId: helpers.getUserId()
     $.get '/api/queues', (data) =>
-      @setState queues: data
+      @setState queues: data.sort (queue1, queue2) ->
+        queue1.displayName < queue2.displayName
 
   render: ->
     queues = @state.queues.map (queue, idx, arr) =>
