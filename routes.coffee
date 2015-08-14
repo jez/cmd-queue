@@ -27,6 +27,7 @@ router.get    '/api/slots/:key'       , spots.show
 router.post   '/api/slots'            , spots.create
 router.delete '/api/slots/:key'       , spots.destroy
 
+router.get    '/admin/exceptions'     , exceptions.index
 router.get    '/admin/exceptions/:id' , exceptions.show
 
 router.get    '/'                     , main.app
