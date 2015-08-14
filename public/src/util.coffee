@@ -19,6 +19,8 @@ exports.slugify = (string) ->
 
 exports.validateSlug = (string) ->
   not string or
+    string == 'api' or
+    string == 'admin' or
     ((!!string.match /^[A-Za-z0-9]+(?:[_-][A-Za-z0-9]+)*$/) and
     not (string.match /--/))
 

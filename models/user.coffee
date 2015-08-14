@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) ->
       type: DataTypes.STRING
       validate:
         isEmail: true
+
+    isAdmin:
+      type: DataTypes.BOOLEAN
+      defaultValue: false
   ,
     classMethods:
       associate: (models) ->

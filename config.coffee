@@ -30,6 +30,9 @@ config =
   googleClientId:     process.env.GOOGLE_CLIENT_ID
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET
   oauthCallbackHost:  process.env.OAUTH_CALLBACK_HOST
+  mailgunAPIKey:      process.env.MAILGUN_API_KEY
+  mailgunFrom:        process.env.MAILGUN_FROM
+  mailgunTo:          process.env.MAILGUN_TO
 
 # validate config
 fallback 'nodeEnv', 'development'
@@ -39,6 +42,10 @@ config.db = require("./db")[config.nodeEnv]
 
 fail 'Google client id not set'     unless config.googleClientId
 fail 'Google client secret not set' unless config.googleClientSecret
+
+if config.mailgunAPIKey
+  fail 'Need to set mailgun from address'  unless config.mailgunFrom
+  fail 'Need to set mailgun to address'    unless config.mailgunTo
 
 fallback 'oauthCallbackHost', "http://localhost:#{config.port}"
 

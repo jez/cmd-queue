@@ -1,6 +1,16 @@
 extends layout
 
+block head
+  link(rel="stylesheet", href="/css/error.css")
+
 block content
-  h1= message
-  h2= error.status
-  pre #{error.stack}
+  .cq-landing
+    .cq-landing-wrapper
+      h1.cq-title #{status} Error
+      h2.cq-subtitle= message
+      if trace
+        pre= trace
+      p.
+        There's been an error with ⌘ + Queue. The administrators have been
+        notified. If you decide to contact them as well, please send this token:
+        #{id}

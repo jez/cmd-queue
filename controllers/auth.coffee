@@ -33,6 +33,15 @@ exports.ensureAuthenticated = (req, res, next) ->
   else
     res.status(401).send null
 
+exports.ensureAdmin = (req, res, next) ->
+  if req.user.isAdmin
+    next()
+  else
+    err = new Error 'Forbidden: Admin'
+    err.status 403
+    err.type 'forbidden'
+    next err
+
 exports.logout = (req, res) ->
   req.logout()
   res.redirect '/'

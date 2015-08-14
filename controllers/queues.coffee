@@ -38,7 +38,10 @@ exports.create = (req, res, next) ->
   user = req.user
 
   unless util.validateSlug queue.key
-    res.status(500).send 'Invalid key for queue'
+    ex = new Error 'Invalid key for queue'
+    ex.status = 500
+    ex.type = 'json-error'
+    next ex
 
   models.Queue.create queue
     .then (queue) ->
@@ -49,8 +52,10 @@ exports.create = (req, res, next) ->
       res.location "/queues/#{queue.key}"
       res.status(201).json queue
     .error (err) ->
-      # TODO better error message
-      res.status(500).send null
+      ex = new Error 'Error creating queue'
+      ex.status = 500
+      ex.type = 'json-error'
+      next ex
 
 exports.destroy = (req, res, next) ->
   key    = req.params.key
@@ -67,8 +72,10 @@ exports.destroy = (req, res, next) ->
       else
         res.status(404).send 'No queues matching search query.'
     .error (err) ->
-      # TODO better error message
-      res.status(500).send null
+      ex = new Error 'Error destroying queue'
+      ex.status = 500
+      ex.type = 'json-error'
+      next ex
 
 exports.modify = (req, res, next) ->
   key    = req.params.key
@@ -84,8 +91,10 @@ exports.modify = (req, res, next) ->
     .then (queue) ->
       res.status(204).json queue
     .error (err) ->
-      # TODO better error message
-      res.status(500).send null
+      ex = new Error 'Error modifying queue'
+      ex.status = 500
+      ex.type = 'json-error'
+      next ex
 
 # non-RESTful endpoints
 
@@ -106,8 +115,13 @@ exports.join = (req, res, next) ->
             res.location "/api/spots/#{spot.key}"
             res.status(201).json spot
       else
-        res.status(409).send "You can't hold multiple spots in the same queue."
+        ex = new Error "You can't hold multiple spots in the same queue."
+        ex.status = 409
+        ex.type = 'json-error'
+        next ex
     .error (err) ->
-      # TODO better error message
-      res.status(500).send null
+      ex = new Error 'Error joining queue'
+      ex.status = 500
+      ex.type = 'json-error'
+      next ex
 

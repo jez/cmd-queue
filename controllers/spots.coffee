@@ -29,8 +29,10 @@ exports.create = (req, res, next) ->
       res.location "/spots/#{spot.key}/"
       res.status(201).json spot
     .error (err) ->
-      # TODO better error message
-      res.status(500).send null
+      ex = new Error 'Error creating spot'
+      ex.status = 500
+      ex.type = 'json-error'
+      next ex
 
 exports.destroy = (req, res, next) ->
   key    = req.params.key
@@ -46,5 +48,7 @@ exports.destroy = (req, res, next) ->
       else
         res.status(404).send 'No spots matching search query.'
     .error (err) ->
-      # TODO better error message
-      res.status(500).send null
+      ex = new Error 'Error destroying spot'
+      ex.status = 500
+      ex.type = 'json-error'
+      next ex

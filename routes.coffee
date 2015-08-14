@@ -1,9 +1,10 @@
 express = require 'express'
 
-auth   = require './controllers/auth'
-queues = require './controllers/queues'
-spots  = require './controllers/spots'
-main   = require './controllers/app'
+auth       = require './controllers/auth'
+queues     = require './controllers/queues'
+spots      = require './controllers/spots'
+exceptions = require './controllers/exceptions'
+main       = require './controllers/app'
 
 router = express.Router()
 
@@ -23,6 +24,8 @@ router.get    '/api/spots/:key'       , spots.show
 router.post   '/api/spots'            , spots.create
 router.delete '/api/spots/:key'       , spots.destroy
 
+router.get    '/admin/exceptions/:id' , exceptions.show
+
 router.get    '/'                     , main.app
 router.get    '/:key'                 , auth.logInFirst, main.app
 
@@ -30,5 +33,9 @@ module.exports = (app) ->
   # Register routers
   # HTTPS redirects temporarily disabled. See controllers/app.coffee
   #app.use main.forceHTTPS
-  app.use '/api', auth.ensureAuthenticated
-  app.use '/', router
+  app.use '/api'   , auth.ensureAuthenticated
+  app.use '/admin' , auth.ensureAuthenticated, auth.ensureAdmin
+  app.use '/'      , router
+
+  # error handling
+  app.use exceptions.notFoundHandler, exceptions.handleErrors
