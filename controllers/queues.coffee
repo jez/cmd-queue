@@ -36,19 +36,25 @@ exports.create = (req, res, next) ->
     displayName: req.body.displayName
   user = req.user
 
-  unless util.validateSlug queue.key
-    ex = new Error 'Invalid key for queue'
-    ex.status = 500
+  if not (queue.key and util.validateSlug queue.key)
+    ex = new Error "Invalid key for queue: <#{queue.key}>"
+    ex.status = 400
     ex.type = 'json-error'
     next ex
 
-  models.Queue.create queue
-    .then (queue) ->
-      queue.addOwner user
+  models.Queue.findOrCreate where: queue
+    .spread (queue, created) ->
+      if created
+        queue.addOwner user
+      else
+        ex = new Error "Queue for key <#{queue.key}> already exists"
+        ex.status = 409
+        ex.type = 'json-error'
+        next ex
     .then ->
       models.Queue.findById queue.key, include: includeParams
     .then (queue) ->
-      res.location "/queues/#{queue.key}"
+      res.location "/api/queues/#{queue.key}"
       res.status(201).json queue
     .error (err) ->
       ex = new Error 'Error creating queue'
