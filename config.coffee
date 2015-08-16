@@ -38,7 +38,7 @@ config =
 # validate config
 fallback 'nodeEnv', 'development'
 fallback 'port', normalizePort '3000'
-fail 'Session secret not set', unless config.sessionSecret
+fail 'Session secret not set' unless config.sessionSecret
 
 config.db = require("./db")[config.nodeEnv]
 
