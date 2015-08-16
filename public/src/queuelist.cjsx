@@ -45,6 +45,9 @@ QueueList = React.createClass
       Spots: []
       Owners: []
     ]
+    user:
+      id: ''
+      isAdmin: false
 
   addQueue: (queue) ->
     $.post '/api/queues', queue, (queue) =>

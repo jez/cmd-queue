@@ -25,7 +25,7 @@ exports.validateSlug = (string) ->
 
 # admins are owners of all queues and also 'hold' all spots
 exports.isInOwners = (user, owners) ->
-  user.isAdmin or _.find owners, ((owner) -> owner.id == user.id)
+  user.isAdmin or !!_.find owners, ((owner) -> owner.id == user.id)
 
 exports.holdsSpot = (user, spot) ->
   user.isAdmin or spot.HolderId == user.id

@@ -35,6 +35,9 @@ Queue = React.createClass
     displayName: 'Loading...'
     Spots: []
     Owners: []
+    user:
+      id: ''
+      isAdmin: false
 
   componentDidMount: ->
     @setState user: helpers.getUserFromDom()

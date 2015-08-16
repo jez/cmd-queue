@@ -36,7 +36,7 @@ exports.create = (req, res, next) ->
 
 exports.destroy = (req, res, next) ->
   key  = req.params.key
-  user = req.user.id
+  user = req.user
 
   models.Spot.findById key, include: includeParams
     .then (spot) ->

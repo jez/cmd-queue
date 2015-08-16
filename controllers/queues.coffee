@@ -112,7 +112,7 @@ exports.join = (req, res, next) ->
 
   models.Queue.findById key, include: includeParams[0]
     .then (queue) ->
-      if not util.isInQueue(userId, queue.Spots)
+      if not util.isInQueue(user.id, queue.Spots)
         models.Spot.create spot
           .then (spot) ->
             models.Spot.findById spot.key, include: includeParams[0].include
