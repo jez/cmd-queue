@@ -21,8 +21,14 @@ block content
           h2.cq-subtitle Whoa there! ⌘ + Queue makes heavy use of JavaScript.
         h2.cq-subtitle sign in with your Andrew account to join, create, or browse queues
         a.cq-github-link(href="https://github.com/jez/cmdqueue") GitHub
-  #cq-target(data-user-id=userId)
-  #modal-target
+  else
+    #cq-target(data-id=user.id,
+               data-display-name=user.displayName,
+               data-givenName=user.givenName,
+               data-familyName=user.familyName,
+               data-email=user.email,
+               data-isAdmin=user.isAdmin)
+    #modal-target
 
 block scripts
   script(src='/js/bundle.js')

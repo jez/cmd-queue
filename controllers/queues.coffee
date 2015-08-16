@@ -63,13 +63,13 @@ exports.create = (req, res, next) ->
       next ex
 
 exports.destroy = (req, res, next) ->
-  key    = req.params.key
-  userId = req.user.id
+  key  = req.params.key
+  user = req.user
 
   # Ideally we wouldn't have to make two SQL queries here :(
   models.Queue.findById key, include: includeParams[1]
     .then (queue) ->
-      if util.isInOwners userId, queue.Owners
+      if util.isInOwners user, queue.Owners
         models.Queue.destroy { where: { key: key }}
     .then (n) ->
       if n? and n > 0
@@ -85,11 +85,11 @@ exports.destroy = (req, res, next) ->
 exports.modify = (req, res, next) ->
   key    = req.params.key
   owners = req.body.owners
-  userId = req.user.id
+  user   = req.user
 
   models.Queue.findById key
     .then (queue) ->
-      if util.isInOwners userId, queue.getOwners()
+      if util.isInOwners user, queue.getOwners()
         queue.addOwners owners
     .then ->
       models.Queue.findById queue.key, include: includeParams
@@ -104,11 +104,11 @@ exports.modify = (req, res, next) ->
 # non-RESTful endpoints
 
 exports.join = (req, res, next) ->
-  userId = req.user.id
-  key    = req.params.key
+  user = req.user
+  key  = req.params.key
   spot =
     QueueKey: key
-    HolderId: userId
+    HolderId: user.id
 
   models.Queue.findById key, include: includeParams[0]
     .then (queue) ->

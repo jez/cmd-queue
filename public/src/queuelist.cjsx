@@ -16,7 +16,7 @@ QueueItem = React.createClass
       ev.preventDefault()
       @props.removeQueue @props.queue, @props.idx
 
-    if util.isInOwners @props.userId, @props.queue.Owners
+    if util.isInOwners @props.user, @props.queue.Owners
       deleteButton = <DeleteButton onClick={onClick} />
 
     <Link to="queue" params={@props.queue}>
@@ -67,14 +67,14 @@ QueueList = React.createClass
         @setState newState
 
   componentDidMount: ->
-    @setState userId: helpers.getUserId()
+    @setState user: helpers.getUserFromDom()
     $.get '/api/queues', (data) =>
       @setState queues: data.sort (queue1, queue2) ->
         queue1.displayName < queue2.displayName
 
   render: ->
     queues = @state.queues.map (queue, idx, arr) =>
-      <QueueItem userId={@state.userId} key={queue.key} queue={queue} idx={idx}
+      <QueueItem user={@state.user} key={queue.key} queue={queue} idx={idx}
         removeQueue={@removeQueue} />
 
     <List>

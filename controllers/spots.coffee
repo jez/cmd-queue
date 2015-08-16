@@ -35,12 +35,12 @@ exports.create = (req, res, next) ->
       next ex
 
 exports.destroy = (req, res, next) ->
-  key    = req.params.key
-  userId = req.user.id
+  key  = req.params.key
+  user = req.user.id
 
   models.Spot.findById key, include: includeParams
     .then (spot) ->
-      if (util.isInOwners userId, spot.Queue.Owners) or spot.HolderId == userId
+      if (util.isInOwners user, spot.Queue.Owners) or (util.holdsSpot user, spot)
         models.Spot.destroy { where: { key: key }}
     .then (n) ->
       if n? and n > 0

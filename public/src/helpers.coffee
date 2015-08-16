@@ -3,6 +3,7 @@
 
 $ = require 'jquery'
 
-exports.getUserId = ->
+exports.getUserFromDom = ->
   target = $('#cq-target')
-  target.data 'userId'
+  target.data()
+

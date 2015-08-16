@@ -23,11 +23,12 @@ exports.validateSlug = (string) ->
   ((!!string.match /^[A-Za-z0-9]+(?:[_-][A-Za-z0-9]+)*$/) and
   not (string.match /--/))
 
-exports.isInOwners = (userId, owners) ->
-  !!_.find owners, ((owner) -> owner.id == userId)
+# admins are owners of all queues and also 'hold' all spots
+exports.isInOwners = (user, owners) ->
+  user.isAdmin or _.find owners, ((owner) -> owner.id == user.id)
 
-exports.holdsSpot = (userId, spot) ->
-  spot.HolderId == userId
+exports.holdsSpot = (user, spot) ->
+  user.isAdmin or spot.HolderId == user.id
 
 exports.isInQueue = (userId, spots) ->
   !!_.find spots, ((spot) -> spot.HolderId == userId)
