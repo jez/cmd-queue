@@ -25,6 +25,6 @@ $(document).ready ->
     if jqXHR.status == 401
       window.location.href = '/auth/login'
 
-  if helpers.getUserId()
+  if helpers.getUserFromDom()
     Router.run routes, Router.HistoryLocation, (Handler) ->
       React.render <Handler />, $('#cq-target')[0]
