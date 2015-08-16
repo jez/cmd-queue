@@ -41,6 +41,7 @@ exports.create = (req, res, next) ->
     ex.status = 400
     ex.type = 'json-error'
     next ex
+    return
 
   models.Queue.findOrCreate where: queue
     .spread (queue, created) ->

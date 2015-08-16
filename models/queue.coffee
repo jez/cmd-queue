@@ -3,10 +3,14 @@ module.exports = (sequelize, DataTypes) ->
     key:
       allowNull: false
       primaryKey: true
+      validate:
+        notEmpty: true
       type: DataTypes.STRING
 
     displayName:
       allowNull: false
+      validate:
+        notEmpty: true
       type: DataTypes.STRING
   ,
     classMethods:
