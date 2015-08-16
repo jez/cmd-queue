@@ -5,9 +5,18 @@ _ = require 'underscore'
 
 exports.queueCountToString = (count) ->
   switch count
-    when 0 then 'No people in the queue'
+    when 0 then 'No one in the queue'
     when 1 then '1 person in the queue'
     else "#{count} people in the queue"
+
+exports.queueOwnersToString = (owners) ->
+  n = owners.length
+  if n < 1
+    "owned by no one"
+  if n == 1
+    "owned by #{owners[0].displayName}"
+  else if n > 1
+    "owned by #{owners[0].displayName} and #{n - 1} others"
 
 exports.slugify = (string) ->
   string.toString().toLowerCase()

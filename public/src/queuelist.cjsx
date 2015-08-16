@@ -11,7 +11,8 @@ helpers = require './helpers.coffee'
 
 QueueItem = React.createClass
   render: ->
-    subtitle = util.queueCountToString @props.queue.Spots.length
+    subtitle = util.queueOwnersToString @props.queue.Owners
+
     onClick = (ev) =>
       ev.preventDefault()
       @props.removeQueue @props.queue, @props.idx
