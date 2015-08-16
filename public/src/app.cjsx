@@ -1,5 +1,4 @@
 $         = require 'jquery'
-helpers   = require './helpers.coffee'
 React     = require 'react'
 Router    = require 'react-router'
 QueueList = require './queuelist.cjsx'
@@ -25,6 +24,6 @@ $(document).ready ->
     if jqXHR.status == 401
       window.location.href = '/auth/login'
 
-  if helpers.getUserFromDom()
+  if window.user
     Router.run routes, Router.HistoryLocation, (Handler) ->
       React.render <Handler />, $('#cq-target')[0]

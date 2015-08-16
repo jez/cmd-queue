@@ -22,13 +22,10 @@ block content
         h2.cq-subtitle sign in with your Andrew account to join, create, or browse queues
         a.cq-github-link(href="https://github.com/jez/cmdqueue") GitHub
   else
-    #cq-target(data-id=user.id,
-               data-display-name=user.displayName,
-               data-given-name=user.givenName,
-               data-family-name=user.familyName,
-               data-email=user.email,
-               data-is-admin=user.isAdmin)
+    #cq-target
     #modal-target
 
 block scripts
+  //- Save current user as global. This should be treated as a constant!
+  script window.user = !{JSON.stringify(user)}
   script(src='/js/bundle.js')

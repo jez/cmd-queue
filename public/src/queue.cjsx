@@ -2,7 +2,6 @@ $       = require 'jquery'
 moment  = require 'moment'
 React   = require 'react/addons'
 util    = require './util.coffee'
-helpers = require './helpers.coffee'
 
 { AddButton, DoneButton } = require './buttons.cjsx'
 {List, ListItem} = require './list.cjsx'
@@ -57,12 +56,8 @@ Queue = React.createClass
     displayName: 'Loading...'
     Spots: []
     Owners: []
-    user:
-      id: ''
-      isAdmin: false
 
   componentDidMount: ->
-    @setState user: helpers.getUserFromDom()
     $.get "/api/queues/#{@props.params.key}", (data) =>
       @setState data
 
@@ -87,8 +82,8 @@ Queue = React.createClass
   render: ->
     queueCount = util.queueCountToString @state.Spots.length
 
-    ownsQueue = util.isInOwners @state.user, @state.Owners
-    holdsSpot = (spot) => util.holdsSpot @state.user.id, spot
+    ownsQueue = util.isInOwners window.user, @state.Owners
+    holdsSpot = (spot) => util.holdsSpot window.user.id, spot
     spots = @state.Spots.map (spot, idx, arr) =>
       <Spot key={spot.key} spot={spot} idx={idx}
         holdsSpot={holdsSpot} ownsQueue={ownsQueue} removeSpot={@removeSpot} />
@@ -96,7 +91,7 @@ Queue = React.createClass
     if ownsQueue
       addOwnerButton = <AddOwnerButton />
 
-    canJoin = not util.isInQueue(@state.user.id, @state.Spots)
+    canJoin = not util.isInQueue window.user.id, @state.Spots
     <List>
       <QueueHeading title={@state.displayName} subtitle={queueCount}
         join={@join if canJoin} />
