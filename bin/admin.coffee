@@ -3,6 +3,7 @@
 # we don't actually need all these to be set, so let's fake it
 process.env.GOOGLE_CLIENT_ID = true
 process.env.GOOGLE_CLIENT_SECRET = true
+process.env.SESSION_SECRET = 'lol'
 
 models = require '../models'
 
