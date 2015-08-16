@@ -9,6 +9,8 @@ exports.logInFirst = (req, res, next) ->
 exports.storeNext = (req, res, next) ->
   if req.query.next
     req.session.next = req.query.next
+  else
+    delete req.session.next
 
   next()
 
@@ -22,7 +24,7 @@ exports.callback = passport.authenticate 'google'
 exports.after = (req, res) ->
   if req.session.next
     next = req.session.next
-    delete req.session
+    delete req.session.next
     res.redirect next
   else
     res.redirect '/'
