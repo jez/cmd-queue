@@ -43,5 +43,6 @@ server.on 'listening', onListening
 # Listen on provided port, on all network interfaces.
 
 # TODO: replace sync with migration files
-models.sequelize.sync().then ->
+force = config.nodeEnv == 'development'
+models.sequelize.sync(force: force).then ->
   server.listen config.port
