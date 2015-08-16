@@ -23,7 +23,7 @@ passport.deserializeUser (id, done) ->
 passport.use new GoogleStrategy
   clientID: config.googleClientId
   clientSecret: config.googleClientSecret
-  callbackURL: "#{config.oauthCallbackHost}/auth/google/callback"
+  callbackURL: "#{config.canonicalHost}/auth/google/callback"
 , (accessToken, refreshToken, profile, done) ->
   # This is an array, but we need just a single email, so let's at least be
   # smart about which array element we take.

@@ -29,14 +29,16 @@ config =
   port:               process.env.PORT
   googleClientId:     process.env.GOOGLE_CLIENT_ID
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET
-  oauthCallbackHost:  process.env.OAUTH_CALLBACK_HOST
+  canonicalHost:      process.env.CANONICAL_HOST
   mailgunAPIKey:      process.env.MAILGUN_API_KEY
   mailgunFrom:        process.env.MAILGUN_FROM
   mailgunTo:          process.env.MAILGUN_TO
+  sessionSecret:      process.env.SESSION_SECRET
 
 # validate config
 fallback 'nodeEnv', 'development'
 fallback 'port', normalizePort '3000'
+fail 'Session secret not set', unless config.sessionSecret
 
 config.db = require("./db")[config.nodeEnv]
 
@@ -47,6 +49,6 @@ if config.mailgunAPIKey
   fail 'Need to set mailgun from address'  unless config.mailgunFrom
   fail 'Need to set mailgun to address'    unless config.mailgunTo
 
-fallback 'oauthCallbackHost', "http://localhost:#{config.port}"
+fallback 'canonicalHost', "http://localhost:#{config.port}"
 
 module.exports = config

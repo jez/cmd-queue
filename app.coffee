@@ -1,3 +1,4 @@
+config         = require './config'
 express        = require 'express'
 path           = require 'path'
 favicon        = require 'serve-favicon'
@@ -24,7 +25,7 @@ module.exports = (sequelize) ->
 
   # sessions
   app.use session
-    secret: 'TODO: Handle secrets'
+    secret: config.sessionSecret
     store: new SequelizeStore db: sequelize
 
   # Initialize authentication
