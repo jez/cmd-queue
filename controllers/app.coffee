@@ -19,13 +19,14 @@ models = require '../models'
 
 exports.app = (req, res, next) ->
   key = req.params.key
+  user = req.user
   if key
     models.Queue.findById key
       .then (queue) ->
         if queue
           res.render 'app',
             loggedIn: req.isAuthenticated()
-            user: req.user
+            user: user
         else
           ex = new Error 'Queue not found'
           ex.status = 404
@@ -37,4 +38,4 @@ exports.app = (req, res, next) ->
   else
     res.render 'app',
       loggedIn: req.isAuthenticated()
-      user: req.user
+      user: user

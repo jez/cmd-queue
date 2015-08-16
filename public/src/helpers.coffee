@@ -5,5 +5,10 @@ $ = require 'jquery'
 
 exports.getUserFromDom = ->
   target = $('#cq-target')
-  target.data()
+  user = target.data()
+
+  # isAdmin is a bool, so it shows up funny as a data-* attribute
+  user.isAdmin = 'isAdmin' of user
+
+  user
 

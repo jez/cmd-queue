@@ -29,6 +29,28 @@ QueueHeading = React.createClass
       {addButton}
     </ListItem>
 
+AddOwnerButton = React.createClass
+  getInitialState: ->
+    owner: ''
+
+  submit: (ev) ->
+    ev.preventDefault()
+    #TODO: add ajax call to modify owners
+    undefined
+
+  onChange: (ev) ->
+    @setState
+      owner: ev.target.value
+
+  render: ->
+    <ListItem>
+      <form className="cq-listitem-form" onSubmit={@submit}>
+        <input type="email" name="owner" placeholder="carnegie@andrew.cmu.edu"
+            value={@state.owner} onChange={@onChange} />
+        <button>Add as owner</button>
+      </form>
+    </ListItem>
+
 Queue = React.createClass
   getInitialState: ->
     key: ''
@@ -71,10 +93,14 @@ Queue = React.createClass
       <Spot key={spot.key} spot={spot} idx={idx}
         holdsSpot={holdsSpot} ownsQueue={ownsQueue} removeSpot={@removeSpot} />
 
+    if ownsQueue
+      addOwnerButton = <AddOwnerButton />
+
     canJoin = not util.isInQueue(@state.user.id, @state.Spots)
     <List>
       <QueueHeading title={@state.displayName} subtitle={queueCount}
         join={@join if canJoin} />
+      {addOwnerButton}
       {spots}
     </List>
 
