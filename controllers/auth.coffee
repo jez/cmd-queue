@@ -38,8 +38,8 @@ exports.ensureAdmin = (req, res, next) ->
     next()
   else
     err = new Error 'Forbidden: Admin'
-    err.status 403
-    err.type 'forbidden'
+    err.status = 403
+    err.type = 'forbidden'
     next err
 
 exports.logout = (req, res) ->
