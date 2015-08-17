@@ -36,8 +36,8 @@ module.exports = (io) ->
         next ex
 
   destroy: (req, res, next) ->
-    key  = req.params.key
-    user = req.user
+    key   = +req.params.key
+    user  = req.user
     queue = ''
 
     models.Spot.findById key, include: includeParams

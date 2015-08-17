@@ -73,7 +73,7 @@ Queue = React.createClass
       @setState newState
 
     window.socket.on 'done', ({key}) =>
-      idx = _.find @state.Spots, (spot) -> spot.key == key
+      idx = _.findIndex @state.Spots, (spot) -> spot.key == key
       newState = React.addons.update @state,
         Spots:
           $splice: [[idx, 1]]   # splice this spot out
