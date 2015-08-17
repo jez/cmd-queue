@@ -26,6 +26,7 @@ block content
     #modal-target
 
 block scripts
-  //- Save current user as global. This should be treated as a constant!
-  script window.user = !{JSON.stringify(user)}
+  if user
+    //- Save current user as global. This should be treated as a constant!
+    script window.user = !{JSON.stringify(user)}
   script(src='/js/bundle.js')
