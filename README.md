@@ -48,13 +48,13 @@ and open a pull request!
 I put this together mostly just to have something to tinker on and try out a few
 new technologies. Here's a quick run down of the pieces involved:
 
-- Node.js with CoffeeScript everywhere
-- Passport.js for authentication with your Andrew account
-- Sequelize and PostgreSQL for storage
-- Socket.io for real-time updates
-- React for client-side templating
-- React Router for client-side routing
-- Mailgun for sending transactional emails (I get exception notification emails)
+- __Node.js__ with CoffeeScript everywhere
+- __Passport.js__ for authentication with your Andrew account
+- __Sequelize__ and __PostgreSQL__ for storage
+- __Socket.io__ for real-time updates
+- __React__ for client-side templating
+- __React Router__ for client-side routing
+- __Mailgun__ for sending transactional emails (I get exception notification emails)
 
 The thing about a queue service is that it's just a step up from a Todo app, so
 it's got just the right amount of complexity to let you see where certain
