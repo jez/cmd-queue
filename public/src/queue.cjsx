@@ -1,3 +1,4 @@
+_       = require 'underscore'
 $       = require 'jquery'
 moment  = require 'moment'
 React   = require 'react/addons'
@@ -9,7 +10,7 @@ util    = require './util.coffee'
 Spot = React.createClass
   render: ->
     onClick = =>
-      @props.removeSpot @props.spot, @props.idx
+      @props.removeSpot @props.spot
 
     if @props.ownsQueue or @props.holdsSpot @props.spot
       doneButton = <DoneButton onClick={onClick} />
@@ -58,26 +59,32 @@ Queue = React.createClass
     Owners: []
 
   componentDidMount: ->
-    $.get "/api/queues/#{@props.params.key}", (data) =>
-      @setState data
+    $.get "/api/queues/#{@props.params.key}", (queue) =>
+      @setState queue
 
-  join: () ->
-    $.post "/api/queues/#{@state.key}/join", (spot) =>
+      window.socket.emit 'enter', queue.key
+
+    window.socket.on 'join', (spot) =>
       newState = React.addons.update @state,
         Spots:
           $push: [spot]
 
       @setState newState
 
-  removeSpot: (spot, idx) ->
+    window.socket.on 'done', ({key}) =>
+      idx = _.find @state.Spots, (spot) -> spot.key == key
+      newState = React.addons.update @state,
+        Spots:
+          $splice: [[idx, 1]]   # splice this spot out
+
+      @setState newState
+
+  join: () ->
+    $.post "/api/queues/#{@state.key}/join"
+
+  removeSpot: (spot) ->
     $.ajax "/api/slots/#{spot.key}",
       method: 'DELETE'
-      success: =>
-        newState = React.addons.update @state,
-          Spots:
-            $splice: [[idx, 1]]   # splice this spot out
-
-        @setState newState
 
   render: ->
     queueCount = util.queueCountToString @state.Spots.length
@@ -85,11 +92,12 @@ Queue = React.createClass
     ownsQueue = util.isInOwners window.user, @state.Owners
     holdsSpot = (spot) => util.holdsSpot window.user.id, spot
     spots = @state.Spots.map (spot, idx, arr) =>
-      <Spot key={spot.key} spot={spot} idx={idx}
+      <Spot key={spot.key} spot={spot}
         holdsSpot={holdsSpot} ownsQueue={ownsQueue} removeSpot={@removeSpot} />
 
-    if ownsQueue
-      addOwnerButton = <AddOwnerButton />
+    #if ownsQueue
+    #  addOwnerButton = <AddOwnerButton />
+    addOwnerButton = null
 
     canJoin = not util.isInQueue window.user.id, @state.Spots
     <List>

@@ -1,11 +1,11 @@
-module.exports = (app) ->
+module.exports = (app, io) ->
   # --- imports ---
   express    = require 'express'
   router     = express.Router()
 
   auth       = require './controllers/auth'
-  queues     = require './controllers/queues'
-  spots      = require './controllers/spots'
+  queues     = require('./controllers/queues')(io)
+  spots      = require('./controllers/spots')(io)
   exceptions = require './controllers/exceptions'
   main       = require './controllers/app'
 

@@ -3,6 +3,7 @@ React     = require 'react'
 Router    = require 'react-router'
 QueueList = require './queuelist.cjsx'
 Queue     = require './queue.cjsx'
+io        = require 'socket.io-client'
 
 
 {DefaultRoute, Link, Route, RouteHandler} = Router
@@ -23,6 +24,9 @@ $(document).ready ->
   $(document).ajaxError (ev, jqXHR, settings, error) =>
     if jqXHR.status == 401
       window.location.href = '/auth/login'
+
+  # share global socket
+  window.socket = io window.location.origin
 
   if window.user
     Router.run routes, Router.HistoryLocation, (Handler) ->

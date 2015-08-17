@@ -28,10 +28,4 @@ module.exports = (sequelize) ->
     secret: config.sessionSecret
     store: new SequelizeStore db: sequelize
 
-  # Initialize authentication
-  require('./auth')(app)
-
-  # Initialize routes
-  require('./routes')(app)
-
   app

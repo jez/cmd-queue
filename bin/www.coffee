@@ -1,9 +1,10 @@
 # Module dependencies.
 
+config = require '../config'
+http   = require 'http'
 models = require '../models'
 app    = require('../app')(models.sequelize)
-http   = require 'http'
-config = require '../config'
+Socket = require 'socket.io'
 
 # Event listener for HTTP server "error" event.
 
@@ -39,6 +40,13 @@ app.set 'port', config.port
 server = http.createServer app
 server.on 'error', onError
 server.on 'listening', onListening
+
+# Initialize socket.io
+io = new Socket server
+
+# Pass server and socket handle to routes
+require('../auth')(app)
+require('../routes')(app, io)
 
 # Listen on provided port, on all network interfaces.
 
