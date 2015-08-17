@@ -10,6 +10,7 @@ ListItem = React.createClass
   render: ->
     classes = switch @props.type
       when 'heading' then 'cq-listheading'
+      when 'no-padding' then 'cq-nopadding'
       else ''
 
     if @props.onClick

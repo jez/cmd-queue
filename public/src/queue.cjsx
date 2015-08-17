@@ -31,23 +31,24 @@ QueueHeading = React.createClass
 
 AddOwnerButton = React.createClass
   getInitialState: ->
-    owner: ''
+    email: ''
 
   submit: (ev) ->
     ev.preventDefault()
-    #TODO: add ajax call to modify owners
-    undefined
+    @props.addOwner @state.email
+    @setState email: ''
 
   onChange: (ev) ->
     @setState
-      owner: ev.target.value
+      email: ev.target.value
 
   render: ->
-    <ListItem>
+    <ListItem subtitle="Invite people to administer this queue by Andrew email"
+        type="no-padding">
       <form className="cq-listitem-form" onSubmit={@submit}>
-        <input type="email" name="owner" placeholder="carnegie@andrew.cmu.edu"
-            value={@state.owner} onChange={@onChange} />
-        <button>Add as owner</button>
+        <input className="modal-input" type="email" name="email"
+          placeholder="carnegie@andrew.cmu.edu" value={@state.email}
+          onChange={@onChange} />
       </form>
     </ListItem>
 
@@ -79,8 +80,16 @@ Queue = React.createClass
 
       @setState newState
 
-  join: () ->
+  join: ->
     $.post "/api/queues/#{@state.key}/join"
+
+  addOwner: (email) ->
+    $.ajax "/api/queues/#{@state.key}",
+      method: 'PUT'
+      data:
+        owner: email
+      success: (queue) =>
+        @setState queue
 
   removeSpot: (spot) ->
     $.ajax "/api/slots/#{spot.key}",
@@ -95,9 +104,8 @@ Queue = React.createClass
       <Spot key={spot.key} spot={spot}
         holdsSpot={holdsSpot} ownsQueue={ownsQueue} removeSpot={@removeSpot} />
 
-    #if ownsQueue
-    #  addOwnerButton = <AddOwnerButton />
-    addOwnerButton = null
+    if ownsQueue
+      addOwnerButton = <AddOwnerButton addOwner={@addOwner} />
 
     canJoin = not util.isInQueue window.user.id, @state.Spots
     <List>

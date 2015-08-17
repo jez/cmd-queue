@@ -93,14 +93,19 @@ module.exports = (io) ->
         next ex
 
   modify: (req, res, next) ->
-    key    = req.params.key
-    owners = req.body.owners
-    user   = req.user
+    key   = req.params.key
+    owner = req.body.owner
+    user  = req.user
 
-    models.Queue.findById key
+    curQueue = null
+
+    models.Queue.findById key, include: includeParams
       .then (queue) ->
-        if util.isInOwners user, queue.getOwners()
-          queue.addOwners owners
+        if util.isInOwners user, queue.Owners
+          curQueue = queue
+          models.User.findOne { where: { email: owner }}
+      .then (user) ->
+        curQueue.addOwner user
       .then ->
         models.Queue.findById queue.key, include: includeParams
       .then (queue) ->
