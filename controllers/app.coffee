@@ -15,6 +15,7 @@
 #  else
 #    next()
 
+config = require '../config'
 models = require '../models'
 
 exports.app = (req, res, next) ->
@@ -39,3 +40,4 @@ exports.app = (req, res, next) ->
     res.render 'app',
       loggedIn: req.isAuthenticated()
       user: user
+      nodeEnv: config.nodeEnv
