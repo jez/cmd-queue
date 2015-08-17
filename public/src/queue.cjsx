@@ -12,7 +12,7 @@ Spot = React.createClass
     onClick = =>
       @props.removeSpot @props.spot
 
-    if @props.ownsQueue or @props.holdsSpot @props.spot
+    if @props.ownsQueue or util.holdsSpot window.user, @props.spot
       doneButton = <DoneButton onClick={onClick} />
 
     waitTime = "has been waiting for #{moment(@props.spot.createdAt).fromNow(true)}"
@@ -99,10 +99,9 @@ Queue = React.createClass
     queueCount = util.queueCountToString @state.Spots.length
 
     ownsQueue = util.isInOwners window.user, @state.Owners
-    holdsSpot = (spot) => util.holdsSpot window.user.id, spot
     spots = @state.Spots.map (spot, idx, arr) =>
-      <Spot key={spot.key} spot={spot}
-        holdsSpot={holdsSpot} ownsQueue={ownsQueue} removeSpot={@removeSpot} />
+      <Spot key={spot.key} spot={spot} ownsQueue={ownsQueue}
+          removeSpot={@removeSpot} />
 
     if ownsQueue
       addOwnerButton = <AddOwnerButton addOwner={@addOwner} />
