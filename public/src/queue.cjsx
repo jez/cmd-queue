@@ -32,9 +32,12 @@ QueueHeading = React.createClass
 
 ModifyQueueButton = React.createClass
   getInitialState: ->
-    console.log @props.isPrivate
     email: ''
     isPrivate: @props.isPrivate
+
+  componentWillReceiveProps: ->
+    @setState
+      isPrivate: @props.isPrivate
 
   submitAddOwner: (ev) ->
     ev.preventDefault()
