@@ -35,9 +35,9 @@ ModifyQueueButton = React.createClass
     email: ''
     isPrivate: @props.isPrivate
 
-  componentWillReceiveProps: ->
+  componentWillReceiveProps: (nextProps) ->
     @setState
-      isPrivate: @props.isPrivate
+      isPrivate: nextProps.isPrivate
 
   submitAddOwner: (ev) ->
     ev.preventDefault()
