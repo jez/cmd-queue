@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) ->
       validate:
         notEmpty: true
       type: DataTypes.STRING
+
+    isPrivate:
+      type: DataTypes.BOOLEAN
+      defaultValue: false
   ,
     classMethods:
       associate: (models) ->

@@ -1,6 +1,8 @@
 React = require 'react'
 util  = require './util.coffee'
 
+{Form, TextInput, Button} = require './forms.cjsx'
+
 Modal = React.createClass
   getInitialState: ->
     displayName: ''
@@ -21,6 +23,7 @@ Modal = React.createClass
     @setState
       displayName: ev.target.value
       key: util.slugify ev.target.value
+      valid: true
 
   changeKey: (ev) ->
     @setState valid: util.validateSlug ev.target.value
@@ -39,25 +42,30 @@ Modal = React.createClass
 
   render: ->
     unless @state.valid
-      invalidWarning =
-        <label className="modal-warning">
-          This field must be made up of alphanumeric characters, hyphens, or
-          underscores, and it can't start nor end with punctuation.
-        </label>
+      invalidWarning = """
+        This field must be made up of alphanumeric characters, hyphens, or
+        underscores, and it can't start nor end with punctuation.
+        """
 
     <div className="modal-canvas #{@state.state}" onClick={@blur}>
       <div className="modal" onClick={@nop}>
         <h1>Create a new queue</h1>
-        <form className="modal-form" onSubmit={@submit}>
-          <input className="modal-input" type="text" name="displayName"
-              placeholder="My Fancy Queue" value={@state.displayName}
+        <Form onSubmit={@submit}>
+          <TextInput className="add-queue-display-name"
+              type="text"
+              name="displayName"
+              placeholder="My Fancy Queue"
+              value={@state.displayName}
               onChange={@changeDisplayName} />
-          <input className="modal-input" type="text" name="key"
-              placeholder="my-fancy-queue" value={@state.key}
-              onChange={@changeKey} />
-          {invalidWarning}
-          <button className="modal-button">Create</button>
-        </form>
+          <TextInput className="add-queue-key"
+              type="text"
+              name="key"
+              placeholder="my-fancy-queue"
+              value={@state.key}
+              onChange={@changeKey}
+              helpText={invalidWarning} />
+          <Button>Create</Button>
+        </Form>
       </div>
     </div>
 

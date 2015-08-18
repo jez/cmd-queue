@@ -29,6 +29,7 @@ module.exports = (io) ->
     # sequelize to be able to join all the queues and their lengths
     models.Queue.findAll
         include: includeParams
+        where: isPrivate: false
       .then (queues) ->
         res.json queues
 
@@ -43,6 +44,7 @@ module.exports = (io) ->
     queue =
       key:         req.body.key
       displayName: req.body.displayName
+      isPrivate:   req.body.isPrivate
     user = req.user
 
     if not (queue.key and util.validateSlug queue.key)
@@ -93,9 +95,10 @@ module.exports = (io) ->
         next ex
 
   modify: (req, res, next) ->
-    key   = req.params.key
-    owner = req.body.owner
-    user  = req.user
+    key       = req.params.key
+    owner     = req.body.owner
+    isPrivate = req.body.isPrivate
+    user      = req.user
 
     curQueue = null
 
@@ -105,9 +108,13 @@ module.exports = (io) ->
           curQueue = queue
           models.User.findOne { where: { email: owner }}
       .then (user) ->
-        curQueue.addOwner user
+        if owner
+          curQueue.addOwner user
+        else if isPrivate?
+          models.Queue.update isPrivate: isPrivate,
+              where: key: key
       .then ->
-        models.Queue.findById queue.key, include: includeParams
+        models.Queue.findById key, include: includeParams
       .then (queue) ->
         res.status(204).json queue
       .error (err) ->

@@ -6,6 +6,7 @@ util    = require './util.coffee'
 
 { AddButton, DoneButton } = require './buttons.cjsx'
 {List, ListItem} = require './list.cjsx'
+{Form, TextInput, Checkbox} = require './forms.cjsx'
 
 Spot = React.createClass
   render: ->
@@ -29,27 +30,44 @@ QueueHeading = React.createClass
       {addButton}
     </ListItem>
 
-AddOwnerButton = React.createClass
+ModifyQueueButton = React.createClass
   getInitialState: ->
     email: ''
+    isPrivate: @props.isPrivate
 
-  submit: (ev) ->
+  submitAddOwner: (ev) ->
     ev.preventDefault()
-    @props.addOwner @state.email
+    @props.modifyQueue owner: @state.email
     @setState email: ''
 
-  onChange: (ev) ->
+  onChangeEmail: (ev) ->
     @setState
       email: ev.target.value
 
+  onChangeIsPrivate: (ev) ->
+    @setState
+      isPrivate: ev.target.checked
+    @props.modifyQueue isPrivate: ev.target.checked
+
   render: ->
-    <ListItem subtitle="Invite people to administer this queue by Andrew email"
-        type="no-padding">
-      <form className="cq-listitem-form" onSubmit={@submit}>
-        <input className="modal-input" type="email" name="email"
-          placeholder="carnegie@andrew.cmu.edu" value={@state.email}
-          onChange={@onChange} />
-      </form>
+    isPrivateStr = if @state.isPrivate then '' else 'not'
+    <ListItem type="no-padding">
+      <Form onSubmit={@submitAddOwner}>
+        <TextInput className="modify-queue-owner"
+            type="email"
+            name="email"
+            value={@state.email}
+            placeholder="carnegie@andrew.cmu.edu"
+            onChange={@onChangeEmail}
+            title="Add owners"
+            helpText="Invite people to administer this queue by Andrew email" />
+        <Checkbox className="modify-queue-is-private"
+            name="isPrivate"
+            value={@state.isPrivate}
+            onChange={@onChangeIsPrivate}
+            title="Privacy"
+            helpText="This queue is #{isPrivateStr} private" />
+      </Form>
     </ListItem>
 
 Queue = React.createClass
@@ -83,11 +101,10 @@ Queue = React.createClass
   join: ->
     $.post "/api/queues/#{@state.key}/join"
 
-  addOwner: (email) ->
+  modifyQueue: (data) ->
     $.ajax "/api/queues/#{@state.key}",
       method: 'PUT'
-      data:
-        owner: email
+      data: data
       success: (queue) =>
         @setState queue
 
@@ -104,13 +121,13 @@ Queue = React.createClass
           removeSpot={@removeSpot} />
 
     if ownsQueue
-      addOwnerButton = <AddOwnerButton addOwner={@addOwner} />
+      modifyQueueButton = <ModifyQueueButton modifyQueue={@modifyQueue} />
 
     canJoin = not util.isInQueue window.user.id, @state.Spots
     <List>
       <QueueHeading title={@state.displayName} subtitle={queueCount}
         join={@join if canJoin} />
-      {addOwnerButton}
+      {modifyQueueButton}
       {spots}
     </List>
 
