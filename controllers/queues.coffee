@@ -116,7 +116,7 @@ module.exports = (io) ->
       .then ->
         models.Queue.findById key, include: includeParams
       .then (queue) ->
-        res.status(204).json queue
+        res.status(200).json queue
       .error (err) ->
         ex = new Error 'Error modifying queue'
         ex.status = 500

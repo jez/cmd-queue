@@ -1,12 +1,13 @@
 React = require 'react'
 util  = require './util.coffee'
 
-{Form, TextInput, Button} = require './forms.cjsx'
+{Form, TextInput, Checkbox, Button} = require './forms.cjsx'
 
 Modal = React.createClass
   getInitialState: ->
     displayName: ''
     key: ''
+    isPrivate: false
     state: 'active'
     valid: true
 
@@ -26,9 +27,21 @@ Modal = React.createClass
       valid: true
 
   changeKey: (ev) ->
-    @setState valid: util.validateSlug ev.target.value
+    @setState
+      valid: util.validateSlug ev.target.value
+      key: ev.target.value
 
-    @setState key: ev.target.value
+  changeIsPrivate: (ev) ->
+    @setState
+      valid: true
+      isPrivate: ev.target.checked
+
+    if ev.target.checked
+      key = (Math.random() + 1).toString(36).substring(2, 9)
+    else
+      key = util.slugify @state.displayName
+
+    @setState key: key
 
   submit: (ev) ->
     ev.preventDefault()
@@ -39,6 +52,7 @@ Modal = React.createClass
     @props.callback cancelled,
       displayName: @state.displayName
       key:         @state.key
+      isPrivate:   @state.isPrivate
 
   render: ->
     unless @state.valid
@@ -46,6 +60,8 @@ Modal = React.createClass
         This field must be made up of alphanumeric characters, hyphens, or
         underscores, and it can't start nor end with punctuation.
         """
+
+    isPrivateStr = if @state.isPrivate then '' else 'not'
 
     <div className="modal-canvas #{@state.state}" onClick={@blur}>
       <div className="modal" onClick={@nop}>
@@ -64,6 +80,12 @@ Modal = React.createClass
               value={@state.key}
               onChange={@changeKey}
               helpText={invalidWarning} />
+          <Checkbox className="add-queue-is-private"
+              name="isPrivate"
+              value={@state.isPrivate}
+              onClick={@changeIsPrivate}
+              title="Privacy"
+              helpText="This queue will #{isPrivateStr} be private" />
           <Button>Create</Button>
         </Form>
       </div>

@@ -63,7 +63,8 @@ ModifyQueueButton = React.createClass
             helpText="Invite people to administer this queue by Andrew email" />
         <Checkbox className="modify-queue-is-private"
             name="isPrivate"
-            value={@state.isPrivate}
+            value="isPrivate"
+            checked={@state.isPrivate}
             onChange={@onChangeIsPrivate}
             title="Privacy"
             helpText="This queue is #{isPrivateStr} private" />
@@ -74,6 +75,7 @@ Queue = React.createClass
   getInitialState: ->
     key: ''
     displayName: 'Loading...'
+    isPrivate: false
     Spots: []
     Owners: []
 
@@ -121,7 +123,8 @@ Queue = React.createClass
           removeSpot={@removeSpot} />
 
     if ownsQueue
-      modifyQueueButton = <ModifyQueueButton modifyQueue={@modifyQueue} />
+      modifyQueueButton = <ModifyQueueButton isPrivate={@state.isPrivate}
+          modifyQueue={@modifyQueue} />
 
     canJoin = not util.isInQueue window.user.id, @state.Spots
     <List>

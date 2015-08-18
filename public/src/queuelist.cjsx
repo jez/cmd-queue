@@ -47,14 +47,18 @@ QueueList = React.createClass
     ]
 
   addQueue: (queue) ->
-    $.post '/api/queues', queue, (queue) =>
-      # since we just created this, Spots is probably empty
-      queue.Spots = []
-      newState = React.addons.update @state,
-        queues:
-          $unshift: [queue]
+    $.ajax '/api/queues',
+      method: 'POST'
+      data: JSON.stringify queue
+      contentType: 'application/json'
+      success: (queue) =>
+        # since we just created this, Spots is probably empty
+        queue.Spots = []
+        newState = React.addons.update @state,
+          queues:
+            $unshift: [queue]
 
-      @setState newState
+        @setState newState
 
   removeQueue: (queue, idx) ->
     $.ajax "/api/queues/#{queue.key}",
