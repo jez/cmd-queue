@@ -31,6 +31,11 @@ Students are always busy, so sometimes it's hard to know you'll be productive by
 going to office hours. With ⌘ + Queue, students can check anywhere what the
 approximate wait time will be.
 
+### Private Queues
+
+Don't like that it updates in real time with a list of all the students who are
+at office hours? Queue owners can make their queues private.
+
 ### Multiple owners
 
 Invite your fellow TA's to the queue so you all can cross people off.
