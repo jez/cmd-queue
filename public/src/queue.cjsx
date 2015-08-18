@@ -9,6 +9,19 @@ util    = require './util.coffee'
 {Form, TextInput, Checkbox} = require './forms.cjsx'
 
 Spot = React.createClass
+  getInitialState: ->
+    now: new Date()
+
+  tick: ->
+    # Store current time so render can be a pure function of state and props
+    @setState now: new Date()
+
+  componentDidMount: ->
+    @interval = setInterval @tick, 1000
+
+  componentWillUnmount: ->
+    clearInterval @interval
+
   render: ->
     onClick = =>
       @props.removeSpot @props.spot
@@ -16,7 +29,8 @@ Spot = React.createClass
     if @props.ownsQueue or util.holdsSpot window.user, @props.spot
       doneButton = <DoneButton onClick={onClick} />
 
-    waitTime = "has been waiting for #{moment(@props.spot.createdAt).fromNow(true)}"
+    created = @props.spot.createdAt
+    waitTime = "has been waiting for #{moment(created).from @state.now, true}"
 
     <ListItem title={@props.spot.Holder.displayName} subtitle={waitTime}>
       {doneButton}
