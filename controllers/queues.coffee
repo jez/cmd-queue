@@ -23,13 +23,14 @@ module.exports = (io) ->
       socket.join queueKey
 
   index: (req, res, next) ->
-    # -- no params --
+    params =
+      include: includeParams
+    unless req.user.isAdmin
+      params.where = isPrivate: false
 
     # this is kind of an unfortunate query, but I'm not good enought at SQL nor
     # sequelize to be able to join all the queues and their lengths
-    models.Queue.findAll
-        include: includeParams
-        where: isPrivate: false
+    models.Queue.findAll params
       .then (queues) ->
         res.json queues
 
