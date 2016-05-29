@@ -2,7 +2,9 @@
 
 > A simple queueing service for CMU students.
 
-See it live at <https://cq.jez.io>.
+See it live at <https://cq.jez.io>. (You'll need a CMU login).
+
+<a href="https://raw.githubusercontent.com/jez/cmd-queue/master/screenshots/list01.png"><img src="https://raw.githubusercontent.com/jez/cmd-queue/master/screenshots/list01.png" alt="⌘ + Queue" width="350"></a>
 
 Say you're leading office hours for a class and the number of people waiting
 starts to grow. Just create a queue, called say "15-122", and throw up a link to
